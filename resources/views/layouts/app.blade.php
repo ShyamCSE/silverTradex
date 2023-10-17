@@ -12,6 +12,9 @@
     <link href="{{asset('build/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('build/assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('build/assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 </head>
 
@@ -387,13 +390,16 @@
     </button>
     <!--end back-to-top-->
   @yield('models')
-
+ 
     <!-- JAVASCRIPT -->
     <script src="{{asset('build/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('build/assets/js/apexchart.js')}}"></script>
     <script src="{{asset('build/assets/js/dashboard.js')}}"></script>
     <script src="{{asset('build/assets/js/app.js')}}"></script>
     <script src="{{asset('build/assets/js/custom.js')}}" ></script>
+
+    
+
 </body>
 
 

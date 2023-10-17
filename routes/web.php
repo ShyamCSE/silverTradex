@@ -29,4 +29,6 @@ Route::middleware([
 });
 
 Route::get('category',[CategoryController::class,'index'])->name('category');
-Route::get('addCategory',[CategoryController::class,'store'])->name('addCategory');
+Route::post('addCategory',[CategoryController::class,'add'])->name('addCategory');
+Route::post('editCategory',[CategoryController::class,'edit'])->name('editCategory');
+Route::get('category/delete/{id}',[CategoryController::class,'delete'])->name('category.delete');
