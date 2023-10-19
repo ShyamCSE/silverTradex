@@ -6,15 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Silver Tradex" name="description" />
     <meta content="Aspire Innovations" name="author" />
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{asset('build/assets/images/favicon.ico')}}">
     {{-- <link href="{{asset('build/assets/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />
     <script src="{{asset('build/assets/js/layout.js')}}"></script> --}}
     <link href="{{asset('build/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('build/assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('build/assets/css/custom.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('build/assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  {{-- data table css  --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 </head>
 
@@ -297,7 +300,7 @@
                         <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span></li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="purchasing.html" role="button" aria-controls="sidebarInvoice">
+                            <a class="nav-link menu-link" href="{{route('purchasing.index')}}" role="button" aria-controls="sidebarInvoice">
                                 <i class="las la-file-invoice"></i> <span data-key="t-invoices">Purchase</span>
                             </a>
                         </li>
@@ -397,6 +400,9 @@
     <script src="{{asset('build/assets/js/dashboard.js')}}"></script>
     <script src="{{asset('build/assets/js/app.js')}}"></script>
     <script src="{{asset('build/assets/js/custom.js')}}" ></script>
+
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     
 

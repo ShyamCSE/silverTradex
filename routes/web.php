@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LotController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +31,20 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::group(['middleware' => 'auth'], function () {
 Route::get('category',[CategoryController::class,'index'])->name('category');
 Route::post('addCategory',[CategoryController::class,'add'])->name('addCategory');
 Route::post('editCategory',[CategoryController::class,'edit'])->name('editCategory');
 Route::get('category/delete/{id}',[CategoryController::class,'delete'])->name('category.delete');
+
+Route::resource('purchasing', PurchaseController::class);
+
+Route::controller(LotController::class )->prefix('lot')->group(function (){
+
+ Route::post('/','creare')->name('lot.create');
+ Route::post('getAmount','getAmount')->name('lot.getAmount');
+
+});
+
+
+});
