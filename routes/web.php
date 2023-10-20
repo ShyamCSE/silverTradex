@@ -42,6 +42,7 @@ Route::resource('purchasing', PurchaseController::class);
 Route::controller(LotController::class )->prefix('lot')->group(function (){
 
  Route::post('/','creare')->name('lot.create');
+ Route::post('getQuantity','getQuantity')->name('lot.getQuantity');
  Route::post('getAmount','getAmount')->name('lot.getAmount');
 
 });

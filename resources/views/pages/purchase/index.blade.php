@@ -58,6 +58,7 @@
                                     <th>Category</th>
                                     <th>Supplier</th>
                                     <th>Quantity</th>
+                                    <th>Current Quantity</th>
                                     <th>Rate</th>
                                     <th>Date</th>
                                     <th>Photo</th>
@@ -97,7 +98,7 @@
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
                                         <label for="Name" class="form-label">Purchase Category</label>
-                                        <select class="form-control" onChange="myStatus(this);" name="category" id="category" >
+                                        <select class="form-control"  name="category" id="category" >
                                             <option  selected disabled >Select</option>
                                             @foreach ($category as $item)
                                             <option value="{{$item->id }}"> {{ $item->name }}</option>
@@ -131,15 +132,15 @@
                                 
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
-                                        <label for="Name" class="form-label  d-flex align-items-center">Quantity (Kg) </label>
-                                        <input type="number" class="form-control" name="quantity" id="quantity" placeholder="">
+                                        <label for="Name" class="form-label  d-flex align-items-center">Quantity (Kg) <span class="text-success bg-primary" id="remain_quantity"></span> </label>
+                                        <input type="number" step="0.01" class="form-control" name="quantity" id="quantity" placeholder="">
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
                                         <label for="Name" class="form-label">Rate </label>
-                                        <input type="number" class="form-control" name="rate" id="rate" placeholder="">
+                                        <input type="number" step="0.01" class="form-control" name="rate" id="rate" placeholder="">
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
@@ -202,7 +203,7 @@
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
                                         <label for="Name" class="form-label">Item Category</label>
-                                        <select class="form-control" onchange="myStatus(this.value);"
+                                        <select class="form-control" onchange="getQuantity(this.value);"
                                               name="lotCategory" id="lotCategory" >
                                             <option  selected disabled >Select</option>
                                             @foreach ($category as $item)
@@ -216,7 +217,7 @@
                             
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
-                                        <label for="Name" class="form-label  d-flex align-items-center">Quantity (Kg) <span class="ms-3 d-none text-primary quantity-status" >256 Kg</span> </label>
+                                        <label for="Name" class="form-label  d-flex align-items-center">Quantity (Kg) <span class="ms-3  text-primary quantity-avalable" ></span> </label>
                                         <input type="number" class="form-control" name="lotQuantity" id="lotQuantity" placeholder="">
                                         <span class="text-danger"></span>
                                     </div>
@@ -224,8 +225,8 @@
                               
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
-                                        <label for="paymentdetails" class="form-label d-flex align-items-center">Amount  </label>
-                                        <input type="text" disabled readonly class="form-control" name="lotAmount" id="lotAmount" />
+                                        <label for="paymentdetails" class="form-label d-flex align-items-center">Average Rate in $</label>
+                                        <input type="text" value="" readonly class="form-control" name="lotAmount" id="lotAmount" />
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
@@ -284,9 +285,13 @@ function enableButton() {
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                  
+                    
                     enableButton();
                     if (response.status === 200) {
+                        $('#addpaymentModal').modal('toggle');
+                        // $("#addpaymentModal" .close").click()
+                
+                        getall();
                         $('.success').html(response.message);
                     } else if (response.status === 422 && response.message) {
                         $('.text-danger').html('');
@@ -309,7 +314,9 @@ function enableButton() {
         });
     });
 
-
+    $('#quantity, #rate').on('change', function(){
+    $('#amount').val($('#quantity').val() *  $('#rate').val() );
+    });
 
 function getall(){
     var dataUrl = "{{ route('purchasing.create') }}";
@@ -326,6 +333,7 @@ function getall(){
                     { data: 'category' },
                     { data: 'supplier' },
                     { data: 'quantity' },
+                    { data: 'current_quantity'},
                     { data: 'rate' },
                     { data: 'date' },
                     { data: 'photo' },
@@ -338,21 +346,43 @@ function getall(){
 };
 
 
-function myStatus(category) {
+function getQuantity(category) {
     dataset = {
            category_id: category, 
            quantity: $('#lotQuantity').val(),
           _token: '{{ csrf_token() }}'
     }
         $.ajax({
-            url: "lot/getAmount",
+            url: "lot/getQuantity",
             method: 'post',
             data: dataset,
             success: function(response) {
+               $('.quantity-avalable').html(response + ' KG Avalable');
+               $('#lotQuantity').attr({
+       "max" : response,
+       "min" : 1 
+    });
+            }
+        });
+    }
+
+    $('#lotQuantity, #lotCategory').on('change', function(){
+    if ($('#lotQuantity').val() !== '' && $('#lotCategory').val() !== '') {
+        $.ajax({
+            method: 'post',
+            url: "lot/getAmount",
+            data: {
+                'quantity': $('#lotQuantity').val(),
+                'category': $('#lotCategory').val(),
+                '_token': '{{ csrf_token() }}'
+            }, 
+            success: function(response) {
+                $('#lotAmount').val(response);
                 console.log(response);
             }
         });
     }
+});
 
     </script>
      <script src="{{asset('build/assets/js/lot.js')}}"></script>

@@ -64,6 +64,7 @@ class PurchaseController extends Controller
         $purchase->supplier_id = $request->supplier;
         $purchase->phone = $request->phone;
         $purchase->quantity = $request->quantity;
+        $purchase->current_quantity = $request->quantity;
         $purchase->rate = $request->rate;
         $purchase->date = $request->date;
         if ($request->hasFile('photo')) {
@@ -86,5 +87,8 @@ class PurchaseController extends Controller
         return response()->json(['status' => 200, 'data' => $purchase, 'message' => 'Purchase completed successfully']);
     }
 
+    
+
+   
     
 }
