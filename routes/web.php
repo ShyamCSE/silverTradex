@@ -40,11 +40,12 @@ Route::get('category/delete/{id}',[CategoryController::class,'delete'])->name('c
 Route::resource('purchasing', PurchaseController::class);
 
 Route::controller(LotController::class )->prefix('lot')->group(function (){
-
- Route::post('/','creare')->name('lot.create');
+Route::get('/','index')->name('lot');
+ Route::get('/getAll','getAll')->name('lot.getAll');
+ Route::post('getById','getById')->name('lot.getById');
+ Route::post('/create','creare')->name('lot.create');
  Route::post('getQuantity','getQuantity')->name('lot.getQuantity');
  Route::post('getAmount','getAmount')->name('lot.getAmount');
-
 });
 
 

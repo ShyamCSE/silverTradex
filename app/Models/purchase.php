@@ -10,8 +10,20 @@ class purchase extends Model
     use HasFactory;
 
 
-    protected $fillable = ['status' , 'current_quantity'];
-
+    protected $fillable = [
+        'id',
+        'category_id',
+        'supplier_id',
+        'phone',
+        'quantity',
+        'current_quantity',
+        'rate',
+        'date',
+        'photo',
+        'receipt',
+        'status',
+    ];
+    
 
     Public function category(){
         return $this->belongsTo(Category::class,'category_id');

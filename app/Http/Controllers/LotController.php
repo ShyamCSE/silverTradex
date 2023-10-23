@@ -10,13 +10,35 @@ use Illuminate\Support\Facades\Validator;
 
 class LotController extends Controller
 {
+
+    Public function index(Request $request){
+     return view('pages.lot.index');
+    }
+
+    Public function getAll(){
+        $lot = lot::latest()->get();
+        $data = $lot->map(function ($value, $key) {
+            return [
+                'sno' => $key + 1,
+                'photo' => '<img src="' . asset($value->photo) . '" alt="" class="purchaseImg"  />',
+                'category' => $value->category->name ?? '',
+                'quantity' => $value->quantity,
+                'amount' => $value->amount,
+                'status' => '<button class="lot-action btn btn-primary" data-id="'.$value->id .'" > '. $value->status .' </button>',
+                'options' => '<button class="btn btn-primary btn-sm"> Edit</button> <button class="btn btn-sm btn-danger"> Delete</button>'
+            ];
+        });
+       return response()->json($data);
+    }
+
     public function creare(Request $request)
     {
-      $purchase_avl = purchase::where(['status' => [1, 2], 'category_id' => $request->lotCategory])
+      $purchase_avl = purchase::whereIn('status', [1,2])
+      ->where('category_id' , $request->lotCategory)
       ->sum('current_quantity');
         $validator = Validator::make($request->all(), [
             'lotCategory' => 'required',
-            'lotAmount' => 'required|integer',
+            'lotAmount' => 'required',
             'lotQuantity' => "required|integer|max:$purchase_avl",
             'lotPhoto' => 'nullable|image|max:2048',
         ]);
@@ -32,18 +54,18 @@ class LotController extends Controller
         if ($request->hasFile('lotPhoto')) {
             $uploadedFile = $request->file('lotPhoto');
             $uniqueFileName = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-            $photoPath = $uploadedFile->storeAs('files', $uniqueFileName, 'public');
+            $photoPath = $uploadedFile->move('files', $uniqueFileName);
             $lot->photo = $photoPath;
         }
        
 
-        // deduction from purchase
-        $desiredQuantity = $request->quantity;
+        $desiredQuantity = $request->lotQuantity;
         $currentQuantity = 0;
         $selectedProducts = [];
         $averageRate = 0;
         
-        $products = purchase::where(['status' => [1, 2], 'category_id' => $request->lotCategory])
+        $products = purchase::whereIn('status' , [1,2])
+            ->where('category_id' , $request->lotCategory)
             ->orderBy('created_at', 'asc')
             ->get();
         
@@ -58,7 +80,7 @@ class LotController extends Controller
                 ];
                 $currentQuantity += $product->current_quantity;
                 
-                // Update the individual product, not the entire collection
+             
                 $product->update([
                     'status' => 0,
                     'current_quantity' => 0,
@@ -71,7 +93,7 @@ class LotController extends Controller
                 ];
                 $currentQuantity += $remainingQuantity;
                 
-                // Update the individual product, not the entire collection
+              
                 $product->update([
                     'status' => 2,
                     'current_quantity' => $product->current_quantity - $remainingQuantity,
@@ -101,7 +123,8 @@ class LotController extends Controller
         $selectedProducts = [];
         $averageRate = 0; 
 
-        $products = purchase::where(['status' => [1, 2], 'category_id' => $request->category])
+        $products = purchase::whereIn('status' ,[1,2])
+            ->where('category_id' , $request->category)
             ->orderBy('created_at', 'asc')
             ->get();
 
@@ -141,7 +164,23 @@ class LotController extends Controller
 
 
     Public function getQuantity( Request $request){
-        return  purchase::where(['status' => [1, 2], 'category_id' => $request->category_id])
-            ->sum('current_quantity');
+      
+        return Purchase::whereIn('status',[1,2])
+        ->where('category_id', $request->category_id)
+        ->sum('current_quantity');
+    
+    }
+
+    Public function getById(Request $request){
+          $lot = lot::findorfail( $request->id);
+            $data = [
+                'category' => $lot->category->name,
+                'quantity' => $lot->quantity,
+                'amount' => $lot->amount,
+                'photo'  =>'<img src="'. asset($lot->photo) .'" class="purchaseImg" >',
+                'making_charges' => $lot->making_charges,
+                'status' => $lot->status,
+            ];
+          return response()->json($data);
     }
 }

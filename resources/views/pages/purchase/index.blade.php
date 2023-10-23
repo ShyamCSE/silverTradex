@@ -12,7 +12,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">Purchase</li>
                         </ol>
                     </div>
@@ -349,7 +349,7 @@ function getall(){
 function getQuantity(category) {
     dataset = {
            category_id: category, 
-           quantity: $('#lotQuantity').val(),
+        //    quantity: $('#lotQuantity').val(),
           _token: '{{ csrf_token() }}'
     }
         $.ajax({

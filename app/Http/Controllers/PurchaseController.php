@@ -25,7 +25,7 @@ class PurchaseController extends Controller
                 'category' => $item->category->name ?? '',
                 'supplier' => $item->supplier->name ?? '',
                 'quantity' => $item->quantity,
-                'current_quantity' => $item->quantity,
+                'current_quantity' => $item->current_quantity,
                 'rate'  => $item->rate,
                 'date'  => $item->date,
                 'photo' => $item->photo ? '<img  src="' . asset( $item->photo) . '" class="purchaseImg">' : null,
@@ -33,9 +33,7 @@ class PurchaseController extends Controller
                 'options' => '<button class="btn btn-primary purchase_edit"> Edit </button> <button class="btn btn-danger  purchase_delete"> Delete </button>'
             ];
         });
-        
 
-      
         return response()->json( $data);
     }
 
@@ -70,16 +68,15 @@ class PurchaseController extends Controller
         if ($request->hasFile('photo')) {
             $uploadedFile = $request->file('photo');
             $uniqueFileName = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-            $photoPath = $uploadedFile->storeAs('files', $uniqueFileName, 'public');
-            $purchase->photo = 'storage/'. $photoPath;
+            $photoPath = $uploadedFile->move('files', $uniqueFileName );
+            $purchase->photo =  $photoPath;
         }
+        
         if ($request->hasFile('receipt')) {
             $uploadedReceipt = $request->file('receipt');
-        
             $uniqueReceiptName = time() . '_' . uniqid() . '.' . $uploadedReceipt->getClientOriginalExtension();
-
-            $receiptPath = $uploadedReceipt->storeAs('files', $uniqueReceiptName, 'public');
-            $purchase->receipt = 'storage/'.$receiptPath;
+            $receiptPath = $uploadedReceipt->move('files', $uniqueReceiptName);
+            $purchase->receipt = $receiptPath;
         }
     
         $purchase->save();

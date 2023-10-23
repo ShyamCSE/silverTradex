@@ -306,7 +306,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="dispatch-lot.html">
+                            <a class="nav-link menu-link" href="{{route('lot')}}">
                                 <i class="las la-shipping-fast"></i> <span data-key="t-payments">Dispatch Lot</span>
                             </a>
                         </li>
