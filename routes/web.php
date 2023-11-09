@@ -46,7 +46,7 @@ Route::get('/','index')->name('lot');
  Route::post('/create','creare')->name('lot.create');
  Route::post('getQuantity','getQuantity')->name('lot.getQuantity');
  Route::post('getAmount','getAmount')->name('lot.getAmount');
+ Route::post('process','process')->name('lot.process');
+
 });
-
-
 });
