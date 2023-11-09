@@ -156,7 +156,7 @@
         };
 
 
-        $(document).on('click', '.next', function(e) {
+    $(document).on('click', '.next', function(e) {
     e.preventDefault();
     $('.text-danger').html('');
     var $form = $(this).closest('form.lotform_process');
@@ -166,8 +166,9 @@
         data: $form.serialize(),
         success: function(response) {
             if (response.status == 200) {
-                 alert(response.message);
                 moveToNextStep();
+ 
+               
             } else if (response.status === 422) {
                 for (const key in response.message) {
                     if (response.message.hasOwnProperty(key)) {
@@ -179,31 +180,39 @@
     });
 });
 
+var currentStep = 1; // Initialize the current step to 1
+
 function moveToNextStep() {
-    var currentStep = getCurrentStep();
+    console.log("currentStep", currentStep);
+
     if (currentStep < $('fieldset').length) {
         $('fieldset').eq(currentStep - 1).hide();
         $('fieldset').eq(currentStep).show();
-        setCurrentStep(currentStep + 1);
+        currentStep++;
+        updateProgressBar(currentStep);
     }
 }
 
 function moveToPreviousStep() {
-    var currentStep = getCurrentStep();
     if (currentStep > 1) {
         $('fieldset').eq(currentStep - 1).hide();
         $('fieldset').eq(currentStep - 2).show();
-        setCurrentStep(currentStep - 1);
+        currentStep--;
+        updateProgressBar(currentStep);
     }
 }
 
-function getCurrentStep() {
-    return parseInt(localStorage.getItem('currentStep')) || 1;
+function updateProgressBar(step) {
+    // Assuming you have a progress bar element with a class 'progress-bar'
+    var progressBar = $('.progress-bar');
+    var totalSteps = $('fieldset').length;
+    var progress = (step / totalSteps) * 100;
+    progressBar.css('width', progress + '%');
 }
 
-function setCurrentStep(step) {
-    localStorage.setItem('currentStep', step);
-}
+// Initialize the progress bar
+updateProgressBar(currentStep);
+
 
         </script>
         

@@ -5,83 +5,84 @@
     </div>
    
       
-<fieldset class="fieldset-step mn-2" >
-    <form class="lotform_process" method="post" action="{{route('lot.process')}}">
-        @csrf
-        <input type="hidden" name="status" value="2">
-        <input type="hidden" name="id" value="{{ $lot->id }}">
-    <div class="container my-4">
-        <div class="row">
-            <div class="col-md-7">
-                <h2 class="fs-title">Making Charges</h2>
+    <fieldset class="fieldset-step"  style=" @if($lot->status == 1) display:block @endif "  >
+        <form class="lotform_process" method="post" action="{{route('lot.process')}}">
+            @csrf
+            <input type="hidden" name="status" value="2">
+            <input type="hidden" name="id" value="{{ $lot->id }}">
+        <div class="container m-4">
+            <div class="row">
+                <div class="col-md-7">
+                    <h2 class="fs-title">Making Charges</h2>
+                </div>
+                <div class="col-md-5">
+                    <h2 class="steps">Step 1 - 6</h2>
+                </div>
             </div>
-            <div class="col-md-5">
-                <h2 class="steps">Step 1 - 6</h2>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select class="form-control category">
+                            <option disabled selected value="{{ $lot->category->id }}">{{ $lot->category->name }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="itemName">Item Name</label>
+                        <input type="text" class="form-control" name="item_name" value="{{ $lot->item_name }}" id="item_name" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="photo">Photo</label>
+                        <img src="{{ asset($lot->photo)}}" alt="Purchase Image" class="lotImg "  />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="quantity" class="d-flex align-items-center">
+                            Quantity (Kg)
+                        </label>
+                        <input type="text" class="form-control disabled " id="quantity" disabled name="quantity"  value="{{ $lot->quantity }}"/>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="rate">Rate</label>
+                        <input type="text" class="form-control" id="rate" name="rate" disabled value="{{ $lot->amount }}" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="madeBy">Made By</label>
+                        <input type="text" class="form-control"  id="made_by" name="made_by" value="{{ $lot->made_by ?? ''}}" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="makingCharges">Making Charges</label>
+                        <input type="text" class="form-control" id="making_charges"  name="making_charges" value="{{ $lot->making_charges }}" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select class="form-control category">
-                        <option disabled selected value="{{ $lot->category->id }}">{{ $lot->category->name }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="itemName">Item Name</label>
-                    <input type="text" class="form-control" name="item_name" value="{{ $lot->item_name }}" id="item_name" />
-                    <span class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="photo">Photo</label>
-                    <img src="{{ asset($lot->photo)}}" alt="Purchase Image" class="lotImg form-control"  />
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="quantity" class="d-flex align-items-center">
-                        Quantity (Kg)
-                    </label>
-                    <input type="text" class="form-control disabled " id="quantity" disabled name="quantity"  value="{{ $lot->quantity }}"/>
-                    <span class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="rate">Rate</label>
-                    <input type="text" class="form-control" id="rate" name="rate" disabled value="{{ $lot->amount }}" />
-                    <span class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="madeBy">Made By</label>
-                    <input type="text" class="form-control"  id="made_by" name="made_by" value="{{ $lot->made_by ?? ''}}" />
-                    <span class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="makingCharges">Making Charges</label>
-                    <input type="text" class="form-control" id="making_charges"  name="making_charges" value="{{ $lot->making_charges }}" />
-                    <span class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <input type="button" name="next" class="btn btn-primary next action-button" value="Save & Next" />
-    </form>
-</fieldset>
+        <input type="button" name="next" class="btn btn-primary next action-button" value="Save & Next" />
+        </form>
+    </fieldset>
 
-    <fieldset class="fieldset-step" >
+    <fieldset class="fieldset-step " style=" @if($lot->status == 2) display:block @endif " >
         <form class="lotform_process" method="post" action="{{route('lot.process')}}">
             @csrf
             <input type="hidden" name="status" value="3">
             <input type="hidden" name="id" value="{{ $lot->id }}">
+            <div class="container md-4">
         <div class="form-card mt-md-5 container-fluid">
             <div class="row bb-1">
                 <div class="col-7">
@@ -205,16 +206,19 @@
                 </div>
             </div>
         </div>
-        <input type="button" name="next" class="next action-button"
+</div>
+        <input type="button" name="next" class="next action-button btn btn-primary "
             value="Save & Next" /> <input type="button" name="previous"
-            class="previous action-button-previous  " value="Previous" />
+            class="previous action-button-previous btn btn-success " value="Previous" />
         </form>
     </fieldset>
 
-    <fieldset class="fieldset-step">
+    <fieldset class="fieldset-step " style=" @if($lot->status == 3) display:block @endif " >
         <form class="lotform_process" method="post" action="{{route('lot.process')}}">
             @csrf
             <input type="hidden" name="status" value="4">
+            <input type="hidden" name="id" value="{{ $lot->id }}">
+            <div class="container md-4">
         <div class="form-card mt-md-5">
             <div class="row bb-1">
                 <div class="col-7">
@@ -331,16 +335,19 @@
                 </div>
             </div>
         </div>
-        <input type="button" name="next" class="next action-button"
+</div>
+        <input type="button" name="next" class="next action-button btn btn-primary"
             value="Save & Next" /> <input type="button" name="previous"
-            class="previous action-button-previous" value="Previous" />
+            class="previous action-button-previous btn btn-success" value="Previous" />
         </form>
     </fieldset>
 
-    <fieldset class="fieldset-step">
+    <fieldset class="fieldset-step" style=" @if($lot->status == 4) display:block @endif " >
         <form class="lotform_process" method="post" action="{{route('lot.process')}}">
             @csrf
             <input type="hidden" name="status" value="5">
+            <input type="hidden" name="id" value="{{ $lot->id }}">
+            <div class="container md-4">
         <div class="form-card mt-md-5">
             <div class="row bb-1">
                 <div class="col-7">
@@ -398,6 +405,7 @@
                             <option value="pending" selected="">Pending</option>
                             <option value="Received">Received</option>
                         </select>
+                        <span class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -405,7 +413,8 @@
                         <label class="item">
                             Clearance Charges
                         </label>
-                        <input type="text" class="form-control" value=" {{ $lot->clearance_charges ?? ''}}" name="clearance_charges" />
+                        <input type="text" class="form-control" id="clearance_charges" value=" {{ $lot->clearance_charges ?? ''}}" name="clearance_charges" />
+                        <span class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -413,7 +422,7 @@
                         <label class="item">
                             Additional Charges
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->shippment_additional_charges ?? ''}}" name="shippment_additional_charges" />
+                        <input type="text" id="shippment_additional_charges" class="form-control" value="{{ $lot->shippment_additional_charges ?? ''}}" name="shippment_additional_charges" />
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -421,7 +430,8 @@
                         <label class="item">
                             Receipt of Shipment
                         </label>
-                        <input type="file" class="form-control"  name="receipt_of_shipment" />
+                        <input type="file" class="form-control"  name="receipt_of_shipment" id="receipt_of_shipment"/>
+                        <span class="text-danger"></span>
                         @if(isset($lot->receipt_of_shipment) && $lot->receipt_of_shipment != null)
                         <span class="text-success">  <a href="{{ asset($lot->receipt_of_shipment)}}"> Uploaded </a></span>
                         @endif
@@ -432,20 +442,24 @@
                         <label class="item">
                             Remarks
                         </label>
-                        <textarea rows="3" cols="3" type="text" class="form-control" name="shippment_remarks"> {{ $lot->shippment_remarks ?? '' }}</textarea>
+                        <textarea rows="3" cols="3" type="text" class="form-control" id="shippment_remarks" name="shippment_remarks"> {{ $lot->shippment_remarks ?? '' }}</textarea>
+                        <span class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
-        <input type="button" name="next" class="next action-button"
+</div>
+        <input type="button" name="next" class="next action-button btn btn-primary"
             value="Save & Next" /> <input type="button" name="previous"
-            class="previous action-button-previous" value="Previous" />
+            class="previous action-button-previous btn btn-success" value="Previous" />
         </form>
     </fieldset>
-    <fieldset class="fieldset-step">
+    <fieldset class="fieldset-step " style=" @if($lot->status == 5) display:block @endif ">
         <form class="lotform_process" method="post" action="{{route('lot.process')}}">
             @csrf
             <input type="hidden" name="status" value="6">
+            <input type="hidden" name="id" value="{{ $lot->id }}">
+            <div class="container md-4">
         <div class="form-card mt-md-5">
             <div class="row bb-1">
                 <div class="col-7">
@@ -463,6 +477,7 @@
                         </label>
                         <input type="text" class="form-control" value="{{ $lot->quantity_after_refinery ?? ''}}"
                             name="quantity_after_refinery" id="quantity_after_refinery" />
+                            <span class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -480,7 +495,8 @@
                             Refinary Charges
                         </label>
                         <input type="text" class="form-control" value="{{ $lot->refinary_charges ?? ''}}"
-                            name="refinary_charges" />
+                            name="refinary_charges" id="refinary_charges" />
+                            <span class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -489,7 +505,8 @@
                             Refinary Report
                         </label>
                         <input type="file" class="form-control" value=""
-                            name="refinary_report" />
+                            name="refinary_report" id="refinary_report" />
+                            <span class="text-danger"></span>
                             @if(isset($lot->refinary_report ) && $lot->refinary_report != '')
                             <a href="{{ asset($lot->refinary_report)}}"> Uploaded</a>
                             @endif
@@ -500,20 +517,24 @@
                         <label class="item">
                             Remarks
                         </label>
-                        <textarea rows="3" cols="3" class="form-control" name="refinery_report" >{{ $lot->refinery_report ?? '' }}</textarea>
+                        <textarea rows="3" cols="3" class="form-control" id="refinery_report" name="refinery_report" >{{ $lot->refinery_report ?? '' }}</textarea>
+                        <span class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
-        <input type="button" name="next" class="next action-button"
+</div>
+        <input type="button" name="next" class="next action-button btn btn-primary "
             value="Save & Next" /> <input type="button" name="previous"
-            class="previous action-button-previous" value="Previous" />
+            class="previous action-button-previous btn btn-success" value="Previous" />
     </form>
     </fieldset>
-    <fieldset class="fieldset-step">
+    <fieldset class="fieldset-step mn-2 " style="@if($lot->status == 6 || 7 ) display:block @endif ">
         <form class="lotform_process" method="post" action="{{route('lot.process')}}">
             @csrf
             <input type="hidden" name="status" value="7">
+            <input type="hidden" name="id" value="{{ $lot->id }}">
+            <div class="container md-4">
         <div class="form-card mt-md-5">
             <div class="row bb-1">
                 <div class="col-7">
@@ -538,8 +559,9 @@
                         <label class="item">
                             Rate
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->sell_rate ?? '' }}" placeholder="Sell Rate "
+                        <input type="text" class="form-control" id="sell_rate" value="{{ $lot->sell_rate ?? '' }}" placeholder="Sell Rate "
                             name="sell_rate" />
+                            <span class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -547,8 +569,9 @@
                         <label class="item">
                             Amount
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->sell_amount ?? ''}}"
+                        <input type="text" class="form-control" id="sell_amount" value="{{ $lot->sell_amount ?? ''}}"
                             name="sell_amount" />
+                            <span class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -566,14 +589,16 @@
                         <label class="item">
                             Remarks
                         </label>
-                        <textarea rows="3" cols="3" class="form-control" name="sell_remarks">{{ $lot->sell_remarks ?? ''}}</textarea>
+                        <textarea rows="3" cols="3" class="form-control" id="sell_remarks" name="sell_remarks">{{ $lot->sell_remarks ?? ''}}</textarea>
+                        <span class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
-        <input type="button" name="next" class="next action-button"
+        </div>
+        <input type="button" name="next" class="next action-button btn btn-primary "
         value="Save" />
-        <input type="button" name="previous" class="previous action-button-previous"
+        <input type="button" name="previous" class="previous action-button-previous btn btn-success"
             value="Previous" />
         </form>
     </fieldset>

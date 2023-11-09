@@ -24,12 +24,34 @@ class LotController extends Controller
                 'category' => $value->category->name ?? '',
                 'quantity' => $value->quantity,
                 'amount' => $value->amount,
-                'status' => '<button class="lot-action btn btn-primary" data-id="'.$value->id .'" > '. $value->status .' </button>',
-                'options' => '<button class="btn btn-primary btn-sm"> Edit</button> <button class="btn btn-sm btn-danger"> Delete</button>'
+                'status' => '<button class="lot-action btn btn-primary" data-id="'.$value->id .'" > '. $this->status($value->status) .' </button>',
+                'options' => '<button class="btn btn-success btn-sm"> Edit</button> <button class="btn btn-sm btn-danger"> Delete</button>'
             ];
         });
        return response()->json($data);
     }
+
+    public function status($status) {
+        switch ($status) {
+            case 1:
+                return "Created";
+            case 2:
+                return "Maked";
+            case 3:
+                return "Packed";
+            case 4:
+                return "Shiped";
+            case 5:
+                return "Transit";
+            case 6:
+                return "Refinery";
+            case 7:
+                return "Sold";
+            default:
+                return "Unknown";
+        }
+    }
+    
 
     public function creare(Request $request)
     {
@@ -197,33 +219,53 @@ class LotController extends Controller
             'dimension'     =>  'required',
             'courier_charges'  => 'required|integer',
             'packaging_additional_charges' => 'required|integer',
-            // 'packaging_remarks' => 'required',
+            'packaging_remarks' => 'nullable|min:4',
             ]);
         }
            
-           
-            // 'date_of_shipping'   => 'required|date',
-            // 'port_of_loading'    => 'required',
-            // 'shipping_charges'   => 'required|integer',
-            // 'insurance_charges'  => 'required|integer',
-            // 'additional_charges'  => 'required|integer',
-            // 'shipping_remarks'   => 'required|integer',
-            // 'received_date'      => 'required|date',
-            // 'receipt_no'         => 'required|integer',
-            // 'clearance_charges'  => 'required|integer', 
-            // 'shippment_additional_charges'  => 'required|integer',
-            // 'shippment_remarks' =>  'nullable',
-            // 'quantity_after_refinery'  =>  'required|integer',
-            // 'refinary_charges'    =>    'required|integer',
-            // 'refinery_report'     => 'required'
+           if($request->status == 4){
+            $validator = Validator::make($request->all(), [
+            'date_of_shipping'   => 'required|date',
+            'port_of_loading'    => 'required',
+            'shipping_charges'   => 'required|integer',
+            'insurance_charges'  => 'required|integer',
+            'additional_charges'  => 'required|integer',
+            'shipping_remarks'   => 'nullable|min:4',
+            ]);
+           }
 
-       
-    
+           if($request->status == 5){
+            $validator = Validator::make($request->all(), [
+            'received_date'      => 'required|date',
+            'receipt_no'         => 'required|integer',
+            'clearance_charges'  => 'required|integer', 
+            'shippment_additional_charges'  => 'required|integer',
+            'shippment_remarks' =>  'nullable|min:4',
+            ]);
+           }
+          
+          if($request->status == 6){
+            $validator = Validator::make($request->all(), [
+            'quantity_after_refinery'  =>  'required|integer',
+            'refinary_charges'    =>    'required|integer',
+            'refinery_report'     => 'required',
+           ]);
+          }
+
+          if($request->status == 7){
+            $validator = Validator::make($request->all(), [
+            'sell_rate'  =>  'required|integer',
+            'sell_amount'    =>    'required|integer',
+            'sell_remarks'     => 'required',
+           ]);
+          }
+        
         if ($validator->fails()) {
             return response(['status' => 422, 'message' => $validator->errors()]);
         }
 
         $lot = Lot::findOrFail($request->id);
+
         if($request->status == 2){
             $lot->item_name = $request->item_name;
             $lot->made_by = $request->made_by;
@@ -231,6 +273,7 @@ class LotController extends Controller
         }
         
         if($request->status == 3){
+            $lot->agent_name = $request->agent_name;
             $lot->agent_mobile = $request->agent_mobile;
             $lot->courier_charges = $request->courier_charges;
             $lot->dimension = $request->dimension;
@@ -242,32 +285,41 @@ class LotController extends Controller
             $lot->packed_by   = $request->packed_by;
          
         }
-        // $lot->agent_name = $request->agent_name;
-        // $lot->agent_mobile = $request->agent_mobile;
-        // $lot->packed_by = $request->packed_by;
-        // $lot->no_of_packages = $request->no_of_packages;
-        // $lot->net_weight = $request->net_weight;
-        // $lot->gross_weight = $request->gross_weight;
-        // $lot->dimension = $request->dimension;
-        // $lot->courier_charges = $request->courier_charges;
-        // $lot->packaging_additional_charges = $request->packaging_additional_charges;
-        // $lot->date_of_shipping = $request->date_of_shipping;
-        // $lot->port_of_loading = $request->port_of_loading;
-        // $lot->shipping_charges = $request->shipping_charges;
-        // $lot->insurance_charges = $request->insurance_charges;
-        // $lot->additional_charges = $request->additional_charges;
-        // $lot->shipping_remarks = $request->shipping_remarks;
-        // $lot->received_date = $request->received_date;
-        // $lot->receipt_no = $request->receipt_no;
-        // $lot->clearance_charges = $request->clearance_charges;
-        // $lot->shippment_additional_charges = $request->shippment_additional_charges;
-        // $lot->shippment_remarks = $request->shippment_remarks;
-        // $lot->quantity_after_refinery = $request->quantity_after_refinery;
-        // $lot->refinary_charges = $request->refinary_charges;
-        // $lot->refinery_report = $request->refinery_report;
+
+        if($request->status == 4){
+            $lot->date_of_shipping = $request->date_of_shipping;
+            $lot->port_of_loading = $request->port_of_loading;
+            $lot->shipping_charges = $request->shipping_charges;
+            $lot->insurance_charges = $request->insurance_charges;
+            $lot->additional_charges = $request->additional_charges;
+            $lot->shipping_remarks = $request->shipping_remarks;
+        }
+
+        if( $request->status == 5){
+            $lot->received_date = $request->received_date;
+            $lot->receipt_no = $request->receipt_no;
+            $lot->clearance_charges = $request->clearance_charges;
+            $lot->shippment_additional_charges = $request->shippment_additional_charges;
+            $lot->shippment_remarks = $request->shippment_remarks;
+        }
+     
+      
+      if($request->status == 6){
+        $lot->quantity_after_refinery = $request->quantity_after_refinery;
+        $lot->refinary_charges = $request->refinary_charges;
+        $lot->refinery_report = $request->refinery_report;
+      }
+
+      if($request->status == 7){
+        $lot->sell_rate = $request->sell_rate;
+        $lot->sell_amount = $request->sell_amount;
+        $lot->sell_remarks = $request->sell_remarks;
+      }
+     
+      if( $lot->status < $request->status ){
         $lot->status = $request->status;
-    
-        
+      }
+   
         $lot->save();
     
         return response(['status' => 200, 'message' => 'Lot updated successfully']);
