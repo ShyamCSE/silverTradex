@@ -21,6 +21,8 @@
 
   {{-- data table css  --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 </head>
 
@@ -32,13 +34,13 @@
                 <div class="navbar-header">
                     <div class="d-flex">
                         <!-- LOGO -->
-                        <div class="navbar-brand-box horizontal-logo">
+                        <!-- <div class="navbar-brand-box horizontal-logo">
                             <a href="{{route('dashboard')}}" class="logo logo-dark">
                                 <span class="logo-lg">
                                     <img src="{{asset('build/assets/images/logo-dark.png')}}" alt="" height="32">
                                 </span>
                             </a>
-                        </div>
+                        </div> -->
 
                         <button type="button"
                             class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
@@ -212,30 +214,25 @@
                                 aria-haspopup="true" aria-expanded="false">
                                 <span class="d-flex align-items-center">
                                     <img class="rounded-circle header-profile-user"
-                                        src="https://www.aspireindia.com/assets/img/pankajkaushik.jpg"
+                                        src="{{ Auth::user()->profile_photo_path ?? asset('files/profile.jpg') }}"
                                         alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
-                                        <span class="d-none d-xl-inline-block fw-medium user-name-text fs-16">Pankaj K.
+                                        <span class="d-none d-xl-inline-block fw-medium user-name-text fs-16">{{ Auth::user()->name }}
                                             <i class="las la-angle-down fs-12 ms-1"></i></span>
                                     </span>
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <a class="dropdown-item" href="#"><i class="bx bx-user fs-15 align-middle me-1"></i>
+                                <a class="dropdown-item" href="{{route('profile.show')}}"><i class="bx bx-user fs-15 align-middle me-1"></i>
                                     <span key="t-profile">Profile</span></a>
-                                <a class="dropdown-item" href="#"><i class="bx bx-wallet fs-15 align-middle me-1"></i>
-                                    <span key="t-my-wallet">Password Change</span></a>
-                                <a class="dropdown-item d-block" href="#"><i
-                                        class="bx bx-wrench fs-15 align-middle me-1"></i> <span
-                                        key="t-settings">Settings</span></a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="bx bx-lock-open fs-15 align-middle me-1"></i> <span
-                                        key="t-lock-screen">Access screen</span></a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#"><i
+                           
+                                <form action="{{route('logout')}}" method="post">
+                                    @csrf
+                                <button class="dropdown-item text-danger" type="submit"><i
                                         class="bx bx-power-off fs-15 align-middle me-1 text-danger"></i> <span
-                                        key="t-logout">Logout</span></a>
+                                        key="t-logout">Logout</span></button>
+                                        </form>
                             </div>
                         </div>
                     </div>
@@ -250,10 +247,10 @@
                 <!-- Dark Logo-->
                 <a href="{{route('dashboard')}}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{asset('build/assets/images/logo-sm.png')}}" alt="" height="22">
+                        <img src="{{asset('build/assets/images/logo-sm.png')}}" alt="" height="35">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{asset('build/assets/images/logo-dark.png')}}" alt="" height="21">
+                        <img src="{{asset('build/assets/images/logo-dark.png')}}" alt="" height="35">
                     </span>
                 </a>
                 <!-- Light Logo-->
@@ -371,7 +368,7 @@
         <div class="main-content">
           @yield('container')
         </div>
-        <footer class="footer">
+        <footer class="container">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
@@ -379,7 +376,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="text-sm-end d-none d-sm-block">
-                            Design & Develop by Aspire Innovations
+                            Design & Develop by Duco Consultancy Private Limited
                         </div>
                     </div>
                 </div>

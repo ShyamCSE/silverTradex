@@ -203,7 +203,7 @@
             url: $(this).attr('action'),
             data: formData,
             success: function (response) {
-                toastr()->success(response.message);
+              
                 $('#name-success').html(response.message)
                 setTimeout( location.reload(), 5000);
               console.log(response.message);

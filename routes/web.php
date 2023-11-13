@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\Investment;
-use App\Http\Controllers\Supplier;
+use App\Http\Controllers\InvestmentController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('editCategory', [CategoryController::class, 'edit'])->name('editCategory');
     Route::get('category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 
-    Route::resource('purchasing', PurchaseController::class);
+  
 
     Route::controller(LotController::class)->prefix('lot')->group(function () {
         Route::get('/', 'index')->name('lot');
@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('getAmount', 'getAmount')->name('lot.getAmount');
         Route::post('process', 'process')->name('lot.process');
     });
-
-    Route::resource('investment', Investment::class);
-    Route::resource('supplier', Supplier::class);
+    Route::resource('purchasing', PurchaseController::class);
+    Route::resource('investment', InvestmentController::class);
+    Route::resource('supplier', SupplierController::class);
 });
