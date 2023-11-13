@@ -160,13 +160,25 @@
     e.preventDefault();
     $('.text-danger').html('');
     var $form = $(this).closest('form.lotform_process');
+     
+    var closestFieldset = $(this).closest('fieldset');
+
+// Log the index of the closest fieldset
+var currentStep = $('fieldset').index(closestFieldset);
+
+// // Log the total number of fieldset elements
+// var totalFieldsets = $('fieldset').length;
+
+// console.log('Index of closest fieldset:', index);
+// console.log('Total number of fieldsets:', totalFieldsets);
+
     $.ajax({
         type: $form.attr('method'),
         url: $form.attr('action'),
         data: $form.serialize(),
         success: function(response) {
             if (response.status == 200) {
-                moveToNextStep();
+                moveToNextStep(currentStep);
  
                
             } else if (response.status === 422) {
@@ -180,7 +192,7 @@
     });
 });
 
-var currentStep = 1; // Initialize the current step to 1
+var currentStep = index; // Initialize the current step to 1
 
 function moveToNextStep() {
     console.log("currentStep", currentStep);
@@ -212,7 +224,6 @@ function updateProgressBar(step) {
 
 // Initialize the progress bar
 updateProgressBar(currentStep);
-
 
         </script>
         

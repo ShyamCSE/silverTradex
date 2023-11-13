@@ -529,7 +529,7 @@
             class="previous action-button-previous btn btn-success" value="Previous" />
     </form>
     </fieldset>
-    <fieldset class="fieldset-step mn-2 " style="@if($lot->status == 6 || 7 ) display:block @endif ">
+    <fieldset class="fieldset-step mn-2 " style="@if($lot->status == 6 || $lot->status == 7)) display:block @endif ">
         <form class="lotform_process" method="post" action="{{route('lot.process')}}">
             @csrf
             <input type="hidden" name="status" value="7">

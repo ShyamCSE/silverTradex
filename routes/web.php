@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\Investment;
+use App\Http\Controllers\Supplier;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,21 +34,23 @@ Route::middleware([
 });
 
 Route::group(['middleware' => 'auth'], function () {
-Route::get('category',[CategoryController::class,'index'])->name('category');
-Route::post('addCategory',[CategoryController::class,'add'])->name('addCategory');
-Route::post('editCategory',[CategoryController::class,'edit'])->name('editCategory');
-Route::get('category/delete/{id}',[CategoryController::class,'delete'])->name('category.delete');
+    Route::get('category', [CategoryController::class, 'index'])->name('category');
+    Route::post('addCategory', [CategoryController::class, 'add'])->name('addCategory');
+    Route::post('editCategory', [CategoryController::class, 'edit'])->name('editCategory');
+    Route::get('category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 
-Route::resource('purchasing', PurchaseController::class);
+    Route::resource('purchasing', PurchaseController::class);
 
-Route::controller(LotController::class )->prefix('lot')->group(function (){
-Route::get('/','index')->name('lot');
- Route::get('/getAll','getAll')->name('lot.getAll');
- Route::post('getById','getById')->name('lot.getById');
- Route::post('/create','creare')->name('lot.create');
- Route::post('getQuantity','getQuantity')->name('lot.getQuantity');
- Route::post('getAmount','getAmount')->name('lot.getAmount');
- Route::post('process','process')->name('lot.process');
+    Route::controller(LotController::class)->prefix('lot')->group(function () {
+        Route::get('/', 'index')->name('lot');
+        Route::get('/getAll', 'getAll')->name('lot.getAll');
+        Route::post('getById', 'getById')->name('lot.getById');
+        Route::post('/create', 'creare')->name('lot.create');
+        Route::post('getQuantity', 'getQuantity')->name('lot.getQuantity');
+        Route::post('getAmount', 'getAmount')->name('lot.getAmount');
+        Route::post('process', 'process')->name('lot.process');
+    });
 
-});
+    Route::resource('investment', Investment::class);
+    Route::resource('supplier', Supplier::class);
 });
