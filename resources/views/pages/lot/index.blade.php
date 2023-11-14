@@ -156,22 +156,14 @@
         };
 
 
-    $(document).on('click', '.next', function(e) {
+$(document).on('click', '.next', function(e) {
     e.preventDefault();
     $('.text-danger').html('');
     var $form = $(this).closest('form.lotform_process');
      
     var closestFieldset = $(this).closest('fieldset');
 
-// Log the index of the closest fieldset
-var currentStep = $('fieldset').index(closestFieldset);
-
-// // Log the total number of fieldset elements
-// var totalFieldsets = $('fieldset').length;
-
-// console.log('Index of closest fieldset:', index);
-// console.log('Total number of fieldsets:', totalFieldsets);
-
+   var currentStep = $('fieldset').index(closestFieldset);
     $.ajax({
         type: $form.attr('method'),
         url: $form.attr('action'),
@@ -192,27 +184,33 @@ var currentStep = $('fieldset').index(closestFieldset);
     });
 });
 
-var currentStep = index; // Initialize the current step to 1
 
-function moveToNextStep() {
+function moveToNextStep(currentStep) {
     console.log("currentStep", currentStep);
-
-    if (currentStep < $('fieldset').length) {
-        $('fieldset').eq(currentStep - 1).hide();
-        $('fieldset').eq(currentStep).show();
+  
+    if (currentStep < $('fieldset').length &&  currentStep != 5 ) {
+        $('fieldset').eq(currentStep).hide();
+        $('fieldset').eq(currentStep + 1).show();
         currentStep++;
         updateProgressBar(currentStep);
     }
 }
 
-function moveToPreviousStep() {
+$(document).on('click' , '.previous' , function(){
+    var $form = $(this).closest('form.lotform_process');
+     
+     var closestFieldset = $(this).closest('fieldset');
+ 
+    var currentStep = $('fieldset').index(closestFieldset);
     if (currentStep > 1) {
-        $('fieldset').eq(currentStep - 1).hide();
-        $('fieldset').eq(currentStep - 2).show();
+        $('fieldset').eq(currentStep ).hide();
+        $('fieldset').eq(currentStep - 1).show();
         currentStep--;
         updateProgressBar(currentStep);
     }
-}
+
+})
+
 
 function updateProgressBar(step) {
     // Assuming you have a progress bar element with a class 'progress-bar'

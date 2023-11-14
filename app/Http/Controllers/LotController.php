@@ -24,8 +24,8 @@ class LotController extends Controller
                 'category' => $value->category->name ?? '',
                 'quantity' => $value->quantity,
                 'amount' => $value->amount,
-                'status' => '<button class="lot-action btn btn-primary" data-id="'.$value->id .'" > '. $this->status($value->status) .' </button>',
-                'options' => '<button class="btn btn-success btn-sm"> Edit</button> <button class="btn btn-sm btn-danger"> Delete</button>'
+                'status' => '<button class="lot-action btn btn-primary btn-sm" data-id="'.$value->id .'" > <i class="fas fa-status" > </i>'. $this->status($value->status) .' </button>',
+                'options' => '<button class="btn btn-sm btn-danger"> <i class="fas fa-trash" > </i> Delete</button>'
             ];
         });
        return response()->json($data);
