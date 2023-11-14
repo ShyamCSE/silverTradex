@@ -30,7 +30,7 @@ class PurchaseController extends Controller
                 'date'  => $item->date,
                 'photo' => $item->photo ? '<img  src="' . asset( $item->photo) . '" class="purchaseImg">' : null,
                 'receipt' => $item->receipt ? '<a target="_blank" href="' . asset($item->receipt) . '"> Open </a>' : null,
-                'options' => '<button class="btn btn-primary purchase_edit"> Edit </button> <button class="btn btn-danger  purchase_delete"> Delete </button>'
+                'options' => '<button class="btn btn-primary purchase_view" data-purchase="' . htmlspecialchars(json_encode($item)) . '"> View </button> <button class="btn btn-danger  purchase_delete" data-purchase="'. $item->id .'"> Delete </button>'
             ];
         });
 
@@ -56,8 +56,12 @@ class PurchaseController extends Controller
             return response(['status' => 422, 'message' => $validator->errors()]);
         }
         
-    
+    if(isset($request->perchasing_id) && $request->perchasing_id != null){
+        $purchase = purchase::findorfail($request->perchasing_id);
+    }else{
         $purchase = new purchase;
+    }
+      
         $purchase->category_id = $request->category;
         $purchase->supplier_id = $request->supplier;
         $purchase->phone = $request->phone;
@@ -82,10 +86,16 @@ class PurchaseController extends Controller
         $purchase->save();
     
         return response()->json(['status' => 200, 'data' => $purchase, 'message' => 'Purchase completed successfully']);
+
     }
 
     
-
+    public function destroy(string $id)
+    {
+       $purchase =  purchase::findorfail($id);
+       $purchase->delete();
+       return response()->json(['success' => true, 'message' => ' purchase delete successfully']);
+    }
    
     
 }

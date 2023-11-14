@@ -51,6 +51,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('process', 'process')->name('lot.process');
     });
     Route::resource('purchasing', PurchaseController::class);
+    Route::delete('/purchasing/{purchase}', 'PurchaseController@destroy')->name('purchasing.destroy');
+
     Route::resource('investment', InvestmentController::class);
     Route::resource('supplier', SupplierController::class);
 });
