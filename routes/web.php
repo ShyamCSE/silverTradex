@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +40,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('editCategory', [CategoryController::class, 'edit'])->name('editCategory');
     Route::get('category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 
-  
-
     Route::controller(LotController::class)->prefix('lot')->group(function () {
         Route::get('/', 'index')->name('lot');
         Route::get('/getAll', 'getAll')->name('lot.getAll');
@@ -55,4 +54,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('investment', InvestmentController::class);
     Route::resource('supplier', SupplierController::class);
+
+    Route::controller(ReportController::class)->prefix('report')->group(function () {
+        Route::get('/','index')->name('report');
+        Route::get('balanceStatement','balanceStatement')->name('report.balanceStatement');
+    });
 });

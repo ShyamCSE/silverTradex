@@ -195,8 +195,12 @@
                             </a>
                         </li>
 
-                     
                         <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{route('report')}}">
+                                <i class="las la-paste"></i> <span data-key="t-payments">Report</span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a class="nav-link menu-link" href="#sidebarReport" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarReport">
                                 <i class="las la-paste"></i> <span data-key="t-report">Report</span>
@@ -227,7 +231,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                        </li> -->
                         <div class="help-box text-center">
                             <img src="{{asset('build/assets/images/create-invoice.png')}}" class="img-fluid" alt="">
                             <div class="mt-3">
