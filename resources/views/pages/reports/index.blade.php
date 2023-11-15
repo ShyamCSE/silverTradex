@@ -22,7 +22,7 @@
             </div>
 <hr>
 <div class="container">
-    <div class="row justify-content-center mb-4">
+    <div class="row justify-content-center mb-6">
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="filterDropdown">Select Filter:</label>
@@ -49,12 +49,13 @@
     </div>
     <!-- Your other content goes here -->
 </div>
+<hr>
 
 <div class="container">
     <div class="row justify-content-center">
 
     <button type="button" class="col-sm-3 m-3 p-3 bg-white rounded  border shadow balanceStatement">
-        <h5>Balance Statement</h5>
+        <h5>Investment Statement</h5>
     </button>
 
 
@@ -91,16 +92,16 @@ $(document).on('click', '.balanceStatement', function (event) {
     event.preventDefault();
 
     let filterData = getFilterData();
+    let url = '{{ route("report.balanceStatement") }}?' + $.param(filterData);
 
-    $.ajax({
-        method: 'get',
-        url: '{{ route("report.balanceStatement") }}',
-        data: filterData,
-        success: function (response) {
-            console.log(response);
-        }
-    });
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'InvestmentStatement.xlsx';
+    link.click();
 });
+
+
+
 
 
     document.getElementById('filterDropdown').addEventListener('change', function () {
