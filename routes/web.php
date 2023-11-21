@@ -64,8 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('purchaseStatement/{filter?}','purchaseStatement')->name('report.purchaseStatement');
         Route::get('purchaseStatementExport','purchaseStatementExport')->name('report.purchaseStatement.export');
 
-        Route::get('lotStatement/{filter?}','purchaseStatement')->name('report.lotStatement');
-        Route::get('lotStatementExport','purchaseStatementExport')->name('report.lotStatement.export');
+        Route::get('lotStatement/{filter?}','lotStatement')->name('report.lotStatement');
+        Route::get('lotStatementExport','lotStatementExport')->name('report.lotStatement.export');
 
 
     });

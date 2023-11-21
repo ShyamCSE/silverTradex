@@ -45,4 +45,26 @@ if (!function_exists('get_date')) {
             'end_date' => $end_date ? $end_date->format('Y-m-d') : null,
         ];
     }
+
+
+     function status($status) {
+        switch ($status) {
+            case 1:
+                return "Created";
+            case 2:
+                return "Maked";
+            case 3:
+                return "Packed";
+            case 4:
+                return "Shiped";
+            case 5:
+                return "Transit";
+            case 6:
+                return "Refinery";
+            case 7:
+                return "Complete";
+            default:
+                return "Unknown";
+        }
+    }
 }

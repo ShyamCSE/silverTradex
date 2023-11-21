@@ -10,6 +10,7 @@ use App\Models\Investment;
 use App\Models\purchase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\lot;
 
 class ReportController extends Controller
 {
@@ -142,6 +143,56 @@ class ReportController extends Controller
 
     public function purchaseStatementExport(){
         return Excel::download(new PurchaseExport(), 'purchaseStatement.xlsx');
+    }
+
+
+    Public function lotStatement(Request $request){
+       
+        if($request->ajax()){
+            $dateRange = get_date($request->filter);
+            $startDate = $dateRange['start_date'];
+            $endDate = $dateRange['end_date'];
+
+            $lot = lot::when($startDate, function ($query) use ($startDate) {
+                return $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                return $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->latest();
+
+            if(isset($request->category) && $request->category != null ){
+                $lot->where('category_id' , $request->category );
+            }
+
+            if(isset($request->status) && $request->status != null ){
+                $lot->where('status' , $request->status );
+            }
+
+
+            $data = $lot->get()->map( function($value , $key){
+               
+                return [
+                   'sno' => $key + 1,
+                  'category' => $value->category?->name,
+                  'quantity' => $value->quantity,
+                  'amount' => $value->amount,
+                  'net_weight' => $value->net_weight,
+                  'no_of_packages' => $value->no_of_packages,
+                  'created_at' => Carbon::parse($value->created_at)->format('d M y , D'),
+                  'status' => '<button class="btn ' . ($value->status == 7 ? 'btn-primary ' : 'btn-success ') . '">' . status($value->status) . '</button>',
+
+                ];
+            });
+
+
+            $overall['total_lot'] = $lot->count();
+            $overall['complete_lot'] = $lot->where('status' , 7)->count();
+
+            return response()->json(['all' => $data , 'overall' => $overall ]);
+        }
+        return view('pages.reports.lot');
+
     }
 
 }

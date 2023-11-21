@@ -24,33 +24,14 @@ class LotController extends Controller
                 'category' => $value->category->name ?? '',
                 'quantity' => $value->quantity,
                 'amount' => $value->amount,
-                'status' => '<button class="lot-action btn btn-primary btn-sm" data-id="'.$value->id .'" > <i class="fas fa-status" > </i>'. $this->status($value->status) .' </button>',
+                'status' => '<button class="lot-action btn ' . ($value->status == 7 ? 'btn-primary ' : 'btn-success ') . ' btn-sm" data-id="'.$value->id .'" > <i class="fas fa-status" > </i>'. status($value->status) .' </button>',
                 'options' => '<button class="btn btn-sm btn-danger"> <i class="fas fa-trash" > </i> Delete</button>'
             ];
         });
        return response()->json($data);
     }
 
-    public function status($status) {
-        switch ($status) {
-            case 1:
-                return "Created";
-            case 2:
-                return "Maked";
-            case 3:
-                return "Packed";
-            case 4:
-                return "Shiped";
-            case 5:
-                return "Transit";
-            case 6:
-                return "Refinery";
-            case 7:
-                return "Sold";
-            default:
-                return "Unknown";
-        }
-    }
+ 
     
 
     public function creare(Request $request)
