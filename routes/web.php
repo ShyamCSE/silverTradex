@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('addCategory', [CategoryController::class, 'add'])->name('addCategory');
     Route::post('editCategory', [CategoryController::class, 'edit'])->name('editCategory');
     Route::get('category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+    Route::get('category/ajax',[CategoryController::class,'getall'])->name('category.getall');
 
     Route::controller(LotController::class)->prefix('lot')->group(function () {
         Route::get('/', 'index')->name('lot');
@@ -59,5 +60,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/','index')->name('report');
         Route::get('balanceStatement/{filter?}','balanceStatement')->name('report.balanceStatement');
         Route::get('balanceStatementExport','balanceStatementExport')->name('report.balanceStatement.export');
+
+        Route::get('purchaseStatement/{filter?}','purchaseStatement')->name('report.purchaseStatement');
+        Route::get('purchaseStatementExport','purchaseStatementExport')->name('report.purchaseStatement.export');
+
+        Route::get('lotStatement/{filter?}','purchaseStatement')->name('report.lotStatement');
+        Route::get('lotStatementExport','purchaseStatementExport')->name('report.lotStatement.export');
+
+
     });
 });

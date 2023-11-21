@@ -42,6 +42,15 @@ class CategoryController extends Controller
         return redirect()->back()->with('success', 'Category delete successfully');
     }
 
-    
+    Public function getall(){
+        $category = Category::latest()->get();
+        $data = $category->map( function($value){
+          return [
+            'id' => $value->id,
+            'name' => $value->name,
+          ];
+        });
+        return response()->json($data);
+    }
     
 }

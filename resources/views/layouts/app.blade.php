@@ -195,11 +195,11 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link menu-link" href="{{route('report')}}">
                                 <i class="las la-paste"></i> <span data-key="t-payments">Report</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="#sidebarReport" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarReport">
@@ -211,12 +211,15 @@
                                         <a href="{{route('report.balanceStatement')}}" class="nav-link" data-key="t-payment-summary">Balance Statment </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="finance-statement.html" class="nav-link" data-key="t-payment-summary">Finance Statment </a>
+                                        <a href="{{route('report.purchaseStatement')}}" class="nav-link" data-key="t-payment-summary">Purchase Statment </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="trading-account-statement.html" class="nav-link" data-key="t-sale-report">Lot Account
-                                            Statment</a>
+                                        <a href="{{route('report.lotStatement')}}" class="nav-link" data-key="t-sale-report">Lot Statment</a>
                                     </li>
+                                    <!-- <li class="nav-item">
+                                        <a href="finance-statement.html" class="nav-link" data-key="t-payment-summary">Finance Statment </a>
+                                    </li>
+                                   
                                     <li class="nav-item">
                                         <a href="international-pricing.html" class="nav-link" data-key="t-expenses-report"> International Pricing
                                         </a>
@@ -228,7 +231,7 @@
 
                                     <li class="nav-item">
                                         <a href="profit-statement.html" class="nav-link" data-key="t-expenses-report"> Profit </a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                         </li>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportInvestment;
+use App\Exports\PurchaseExport;
 use Illuminate\Http\Request;
 use App\Models\Investment;
 use App\Models\purchase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -64,7 +66,7 @@ class ReportController extends Controller
             $mergedData = $mergedData->merge(
                 $unmatchedPurchases->map(function ($pur) {
                     return [
-                        'transaction_date' => $pur->transaction_date ?  \Carbon\Carbon::parse($pur->transaction_date)->format('d M Y') : null,
+                        'transaction_date' => $pur->transaction_date ?  Carbon::parse($pur->transaction_date)->format('d M Y') : null,
                         'credit'           => null,
                         'debit'            => (int)$pur->debit_amount,
                     ];
@@ -86,4 +88,60 @@ class ReportController extends Controller
     public function balanceStatementExport(){
         return Excel::download(new ExportInvestment(), 'balanceStatement.xlsx');
     }
+
+
+    Public function purchaseStatement(Request $request){
+      
+        if($request->ajax()){
+           
+            $dateRange = get_date($request->filter);
+            $startDate = $dateRange['start_date'];
+            $endDate = $dateRange['end_date'];
+
+            $purchase = purchase::whereNull('deleted_at')
+            ->when($startDate, function ($query) use ($startDate) {
+                return $query->whereDate('date', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                return $query->whereDate('date', '<=', $endDate);
+            })
+            ->latest();
+
+            if(isset($request->category) && $request->category != null ){
+                $purchase->where('category_id' , $request->category );
+            }
+
+            if(isset($request->supplier) && $request->supplier != null ){
+                $purchase->where('supplier_id' , $request->supplier );
+            }
+
+            $data = $purchase->get()->map( function($value ){
+
+                return [
+                  'sno' => $value->index + 1,
+                  'category' => $value->category?->name,
+                  'supplier' => $value->supplier?->name,
+                  'quantity' => $value->quantity,
+                  'current_quantity' => $value->current_quantity,
+                  'rate' => $value->rate,
+                  'total_price' => $value->total_price,
+                  'date'  => Carbon::parse($value->date)->format('d M y , D'),
+                  'created_at' => Carbon::parse($value->created_at)->format('d M y , D'),
+                ];
+            });
+
+            $overAll['credit'] = $purchase->sum('quantity');
+            $overAll['debit'] = $purchase->where('status', [0, 2])->sum('quantity') - $purchase->where('status', [0, 2])->sum('current_quantity');
+            $overAll['current'] = $overAll['credit'] - $overAll['debit'];            
+
+            return response()->json(['all' => $data, 'overall' => $overAll]);
+
+        };
+        return view('pages.reports.purchase');
+    }
+
+    public function purchaseStatementExport(){
+        return Excel::download(new PurchaseExport(), 'purchaseStatement.xlsx');
+    }
+
 }
