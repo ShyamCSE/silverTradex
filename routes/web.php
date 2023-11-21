@@ -58,5 +58,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::controller(ReportController::class)->prefix('report')->group(function () {
         Route::get('/','index')->name('report');
         Route::get('balanceStatement/{filter?}','balanceStatement')->name('report.balanceStatement');
+        Route::get('balanceStatementExport','balanceStatementExport')->name('report.balanceStatement.export');
     });
 });

@@ -200,7 +200,7 @@
                                 <i class="las la-paste"></i> <span data-key="t-payments">Report</span>
                             </a>
                         </li>
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link menu-link" href="#sidebarReport" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarReport">
                                 <i class="las la-paste"></i> <span data-key="t-report">Report</span>
@@ -208,7 +208,7 @@
                             <div class="collapse menu-dropdown" id="sidebarReport">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                        <a href="balance-statement.html" class="nav-link" data-key="t-payment-summary">Balance Statment </a>
+                                        <a href="{{route('report.balanceStatement')}}" class="nav-link" data-key="t-payment-summary">Balance Statment </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="finance-statement.html" class="nav-link" data-key="t-payment-summary">Finance Statment </a>
@@ -231,7 +231,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li> -->
+                        </li>
                         <div class="help-box text-center">
                             <img src="{{asset('build/assets/images/create-invoice.png')}}" class="img-fluid" alt="">
                             <div class="mt-3">

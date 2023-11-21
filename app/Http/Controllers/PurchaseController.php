@@ -69,6 +69,7 @@ class PurchaseController extends Controller
         $purchase->current_quantity = $request->quantity;
         $purchase->rate = $request->rate;
         $purchase->date = $request->date;
+        $purchase->total_price = $request->rate * $request->quantity;
         if ($request->hasFile('photo')) {
             $uploadedFile = $request->file('photo');
             $uniqueFileName = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();

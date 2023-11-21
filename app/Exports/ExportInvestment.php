@@ -12,18 +12,10 @@ class ExportInvestment implements FromCollection, WithHeadings, WithMapping
 {
  
 
-    protected $startDate;
-    protected $endDate;
-
-    public function __construct($startDate, $endDate)
-    {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-    }
     
     public function collection()
     {
-        return Investment::whereBetween('created_at', [$this->startDate, $this->endDate])->get();
+        return Investment::latest()->get();
     }
 
     public function headings(): array
