@@ -57,6 +57,7 @@
                                     <th>S.no</th>
                                     <th>Category</th>
                                     <th>Supplier</th>
+                                    <th>Quality</th>
                                     <th>Quantity</th>
                                     <th>Current Quantity</th>
                                     <th>Rate</th>
@@ -123,8 +124,8 @@
                                 </div>
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
-                                        <label for="Name" class="form-label">Phone </label>
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="">
+                                        <label for="Name" class="form-label">Quality (%) </label>
+                                        <input type="number" step="0.01" class="form-control" id="quality" name="quality" placeholder="">
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
@@ -295,10 +296,11 @@
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
+                              
                                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-12">
                                     <div class="mb-3">
-                                        <label for="Name" class="form-label">Phone </label>
-                                        <input type="text" class="form-control" id="Phone" name="phone" placeholder="">
+                                        <label for="Name" class="form-label">Quality (%) </label>
+                                        <input type="number" step="0.01" class="form-control" id="Quality" name="quality" placeholder="">
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
@@ -422,6 +424,7 @@ function enableButton() {
                     { data: 'sno' },
                     { data: 'category' },
                     { data: 'supplier' },
+                    { data: 'quality' },
                     { data: 'quantity' },
                     { data: 'current_quantity'},
                     { data: 'rate' },
@@ -461,6 +464,7 @@ function getall(){
                     { data: 'sno' },
                     { data: 'category' },
                     { data: 'supplier' },
+                    { data: 'quality' },
                     { data: 'quantity' },
                     { data: 'current_quantity'},
                     { data: 'rate' },
@@ -499,7 +503,7 @@ function getall(){
  $(document).on('click', '.purchase_view' , function(){
     var perchase = $(this).data('purchase');
     console.log(perchase);
-     $('#Phone').val(perchase.phone);
+     $('#Quality').val(perchase.quality);
      $('#Date').val(perchase.date);
      $('#Rate').val(perchase.rate);
      $('#Quantity').val(perchase.quantity);
@@ -538,6 +542,7 @@ function getall(){
                     { data: 'sno' },
                     { data: 'category' },
                     { data: 'supplier' },
+                    { data: 'quality' },
                     { data: 'quantity' },
                     { data: 'current_quantity'},
                     { data: 'rate' },

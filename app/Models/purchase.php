@@ -14,7 +14,7 @@ class purchase extends Model
         'id',
         'category_id',
         'supplier_id',
-        'phone',
+        'quality',
         'quantity',
         'current_quantity',
         'rate',

@@ -62,54 +62,109 @@ class LotController extends Controller
         }
        
 
-        $desiredQuantity = $request->lotQuantity;
-        $currentQuantity = 0;
-        $selectedProducts = [];
-        $averageRate = 0;
+        // $desiredQuantity = $request->lotQuantity;
+        // $currentQuantity = 0;
+        // $selectedProducts = [];
+        // $averageRate = 0;
         
-        $products = purchase::whereIn('status' , [1,2])
-            ->where('category_id' , $request->lotCategory)
-            ->orderBy('created_at', 'asc')
-            ->get();
+        // $products = purchase::whereIn('status' , [1,2])
+        //     ->where('category_id' , $request->lotCategory)
+        //     ->orderBy('created_at', 'asc')
+        //     ->get();
         
-        foreach ($products as $product) {
-            $remainingQuantity = $desiredQuantity - $currentQuantity;
+        // foreach ($products as $product) {
+        //     $remainingQuantity = $desiredQuantity - $currentQuantity;
         
-            if ($product->current_quantity <= $remainingQuantity) {
-                $selectedProducts[] = [
-                    'category_id' => $product->id,
-                    'quantity' => $product->current_quantity,
-                    'rate' => $product->rate,
-                ];
-                $currentQuantity += $product->current_quantity;
+        //     if ($product->current_quantity <= $remainingQuantity) {
+        //         $selectedProducts[] = [
+        //             'category_id' => $product->id,
+        //             'quantity' => $product->current_quantity,
+        //             'rate' => $product->rate,
+        //         ];
+        //         $currentQuantity += $product->current_quantity;
                 
              
-                $product->update([
-                    'status' => 0,
-                    'current_quantity' => 0,
-                ]);
-            } else {
-                $selectedProducts[] = [
-                    'category_id' => $product->id,
-                    'quantity' => $remainingQuantity,
-                    'rate' => $product->rate,
-                ];
-                $currentQuantity += $remainingQuantity;
+        //         $product->update([
+        //             'status' => 0,
+        //             'current_quantity' => 0,
+        //         ]);
+        //     } else {
+        //         $selectedProducts[] = [
+        //             'category_id' => $product->id,
+        //             'quantity' => $remainingQuantity,
+        //             'rate' => $product->rate,
+        //         ];
+        //         $currentQuantity += $remainingQuantity;
                 
               
-                $product->update([
-                    'status' => 2,
-                    'current_quantity' => $product->current_quantity - $remainingQuantity,
-                ]);
+        //         $product->update([
+        //             'status' => 2,
+        //             'current_quantity' => $product->current_quantity - $remainingQuantity,
+        //         ]);
                 
-                // Exit the loop as the desired quantity is fulfilled
-                break;
-            }
-        }
+        //         // Exit the loop as the desired quantity is fulfilled
+        //         break;
+        //     }
+        // }
         
-        // Calculate the average rate based on the selected products
-        $totalRate = array_sum(array_column($selectedProducts, 'rate'));
-        $averageRate = count($selectedProducts) > 0 ? $totalRate / count($selectedProducts) : 0;
+        // // Calculate the average rate based on the selected products
+        // $totalRate = array_sum(array_column($selectedProducts, 'rate'));
+        // $averageRate = count($selectedProducts) > 0 ? $totalRate / count($selectedProducts) : 0;
+
+        $desiredQuantity = $request->lotQuantity;
+$currentQuantity = 0;
+$weightedSum = 0; // Modified variable to store the weighted sum
+$selectedProducts = [];
+
+$products = purchase::whereIn('status', [1, 2])
+    ->where('category_id', $request->lotCategory)
+    ->orderBy('created_at', 'asc')
+    ->get();
+
+foreach ($products as $product) {
+    $remainingQuantity = $desiredQuantity - $currentQuantity;
+
+    if ($product->current_quantity <= $remainingQuantity) {
+        $selectedProducts[] = [
+            'category_id' => $product->id,
+            'quantity' => $product->current_quantity,
+            'rate' => $product->rate,
+        ];
+        $currentQuantity += $product->current_quantity;
+
+        // Update the product
+        $product->update([
+            'status' => 0,
+            'current_quantity' => 0,
+        ]);
+    } else {
+        $selectedProducts[] = [
+            'category_id' => $product->id,
+            'quantity' => $remainingQuantity,
+            'rate' => $product->rate,
+        ];
+        $currentQuantity += $remainingQuantity;
+
+        // Update the product
+        $product->update([
+            'status' => 2,
+            'current_quantity' => $product->current_quantity - $remainingQuantity,
+        ]);
+
+        // Exit the loop as the desired quantity is fulfilled
+        break;
+    }
+}
+
+// Calculate the weighted sum based on the selected products
+foreach ($selectedProducts as $selectedProduct) {
+    $weightedSum += $selectedProduct['quantity'] * $selectedProduct['rate'];
+}
+
+// Calculate the weighted average rate
+
+$averageRate = $currentQuantity > 0 ? number_format($weightedSum / $currentQuantity, 2) : 0;
+
         
         $lot->amount = $averageRate ?? 0;
         $lot->save();
@@ -120,50 +175,41 @@ class LotController extends Controller
 
     public function getAmount(Request $request)
     {
-    
         $desiredQuantity = $request->quantity;
         $currentQuantity = 0;
-        $selectedProducts = [];
-        $averageRate = 0; 
-
-        $products = purchase::whereIn('status' ,[1,2])
-            ->where('category_id' , $request->category)
+        $weightedSum = 0;
+        $averagePrice = null; 
+    
+        $products = purchase::whereIn('status', [1, 2])
+            ->where('category_id', $request->category)
             ->orderBy('created_at', 'asc')
             ->get();
-
+    
         foreach ($products as $product) {
             $remainingQuantity = $desiredQuantity - $currentQuantity;
-
+    
             if ($product->current_quantity <= $remainingQuantity) {
-                $selectedProducts[] = [
-                    'category_id' => $product->id,
-                    'quantity' => $product->current_quantity,
-                    'rate' => $product->rate,
-                ];
-                $currentQuantity += $product->current_quantity;
-               
+                $selectedQuantity = $product->current_quantity;
             } else {
-                $selectedProducts[] = [
-                    'category_id' => $product->id,
-                    'quantity' => $remainingQuantity,
-                    'rate' => $product->rate,
-                ];
-                $currentQuantity += $remainingQuantity;
+                $selectedQuantity = $remainingQuantity;
+            }
+    
+            $weightedSum += $selectedQuantity * $product->rate;
+            $currentQuantity += $selectedQuantity;
+    
+            if ($currentQuantity >= $desiredQuantity) {
                 break;
             }
         }
-
-        // Calculate the average rate
-        $totalRate = array_sum(array_column($selectedProducts, 'rate'));
-        $averageRate = count($selectedProducts) > 0 ? $totalRate / count($selectedProducts) : 0;
-
-        // return [
-        //     'selectedProduct' => $selectedProducts,
-        //     'averageRate' => $averageRate,
-        // ];
-
-        return $averageRate;
+    
+        if ($currentQuantity > 0) {
+            $averagePrice = round($weightedSum / $currentQuantity, 2); // Rounded to 2 decimal places
+        }
+    
+        return $averagePrice;
     }
+    
+
 
 
     Public function getQuantity( Request $request){

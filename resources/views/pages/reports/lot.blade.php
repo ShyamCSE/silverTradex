@@ -27,7 +27,7 @@
                         <span id="complete_lot">0</span>
                     </div>
 
-                   
+
                     <div class="mx-3">
                         <Button class="btn btn-outline-primary export">Export in Excel </Button>
                         <div></div>
@@ -35,26 +35,26 @@
 
                 </div>
 
-                <div class="col-sm-auto ms-auto d-flex">
-                <div class="gap-3">
-                        <select name="status" id="status" class="form-control">
-                            <option> Select Status</option>
-                            <option value="1"> Created</option>
-                            <option value="2"> maked</option>
-                            <option value="3"> Packed </option>
-                            <option value="4">Shiped </option>
-                            <option value="5"> Shippments</option>
-                            <option value="6"> Refinery</option>
-                            <option value="7"> Sell</option>
-
-                        </select>
-                    </div>
-                    <div class="gap-3">
+                <div class="col-sm-auto ms-auto d-flex form-group">
+                    <div class="gap-2">
                         <select name="category" id="category" class="form-control">
                             <option> Select Category</option>
                         </select>
                     </div>
-                    <div class="gap-3">
+                    <div class="gap-2">
+                        <select name="lot_status" id="lot_status" class="form-control">
+                            <option selected disabled value="0"> Select Status</option>
+                            <option value="1"> Created</option>
+                            <option value="2"> Maked</option>
+                            <option value="3"> Packed </option>
+                            <option value="4">Shiped </option>
+                            <option value="5"> Shippments</option>
+                            <option value="6"> Refinery</option>
+                            <option value="7"> Completed </option>
+                        </select>
+                    </div>
+
+                    <div class="gap-2">
                         <select name="filter" id="filter" class="form-control">
                             <option value="all">All</option>
                             <option value="daily">Daily</option>
@@ -99,8 +99,11 @@
 <Script>
     $(document).ready(function() {
         getCategories();
-       
-        $('#filter, #category', '#status').change(function() {
+
+        $('#filter, #category').change(function() {
+            getAll();
+        });
+        $('#lot_status').change(function(){
             getAll();
         });
 
@@ -112,16 +115,16 @@
 
     function getAll() {
         var selectedFilter = $('#filter').val();
-        var category = $('#category').val() ;
-        var status = $('#status').val();
+        var category = $('#category').val();
+        var lot_status = $('#lot_status').val() ?? null;
         $.ajax({
             method: 'get',
             url: '{{ route("report.lotStatement") }}',
             data: {
                 filter: selectedFilter,
                 category: category,
-                status:status
-               
+                status: lot_status
+
             },
             success: function(response) {
                 console.log(response);
@@ -154,7 +157,7 @@
                             data: 'created_at'
                         },
                         {
-                            data:'status'
+                            data: 'status'
                         }
                     ]
                 });
@@ -182,7 +185,7 @@
         });
     }
 
-  
+
 
     function exportAll() {
         let url = '{{ route("report.purchaseStatement.export") }}';

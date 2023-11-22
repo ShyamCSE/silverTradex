@@ -7,6 +7,7 @@ use App\Models\purchase;
 use App\Models\supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 
 class PurchaseController extends Controller
 {
@@ -24,10 +25,11 @@ class PurchaseController extends Controller
                 'sno' => $key + 1,
                 'category' => $item->category->name ?? '',
                 'supplier' => $item->supplier->name ?? '',
+                'quality' => $item->quality,
                 'quantity' => $item->quantity,
                 'current_quantity' => $item->current_quantity,
                 'rate'  => $item->rate,
-                'date'  => $item->date,
+                'date'  =>  Carbon::parse($item->date)->format('d M y , D'),
                 'photo' => $item->photo ? '<img  src="' . asset( $item->photo) . '" class="purchaseImg">' : null,
                 'receipt' => $item->receipt ? '<a target="_blank" href="' . asset($item->receipt) . '"> Open </a>' : null,
                 'options' => '<button class="btn btn-primary purchase_view" data-purchase="' . htmlspecialchars(json_encode($item)) . '"> View </button> <button class="btn btn-danger  purchase_delete" data-purchase="'. $item->id .'"> Delete </button>'
@@ -44,7 +46,7 @@ class PurchaseController extends Controller
         $validator = Validator::make($request->all(), [
             'category' => 'required|integer', 
             'supplier' => 'required|integer',
-            'phone' => 'nullable|string', 
+            'quality' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/', 
             'quantity' => 'required|numeric', 
             'rate' => 'required|numeric', 
             'date' => 'required|date',
@@ -64,7 +66,7 @@ class PurchaseController extends Controller
       
         $purchase->category_id = $request->category;
         $purchase->supplier_id = $request->supplier;
-        $purchase->phone = $request->phone;
+        $purchase->quality = $request->quality;
         $purchase->quantity = $request->quantity;
         $purchase->current_quantity = $request->quantity;
         $purchase->rate = $request->rate;
