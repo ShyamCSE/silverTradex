@@ -30,8 +30,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="itemName">Item Name</label>
-                        <input type="text" class="form-control" name="item_name" value="{{ $lot->item_name }}" id="item_name" />
+                        <label for="itemName">Lot Name</label>
+                        <input type="text" class="form-control" name="lot_name" value="{{ $lot->lot_name }}" id="lot_name" />
                         <span class="text-danger"></span>
                     </div>
                 </div>

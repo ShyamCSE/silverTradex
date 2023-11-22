@@ -125,6 +125,7 @@
                 url: dataUrl,
                 method: 'GET',
                 success: function(response) {
+                    $('#myTable').DataTable().destroy();
                     $('#myTable').DataTable({
                         autoFill: true,
                         data: response,
@@ -164,6 +165,7 @@ $(document).on('click', '.next', function(e) {
     var closestFieldset = $(this).closest('fieldset');
 
    var currentStep = $('fieldset').index(closestFieldset);
+ 
     $.ajax({
         type: $form.attr('method'),
         url: $form.attr('action'),
@@ -171,7 +173,10 @@ $(document).on('click', '.next', function(e) {
         success: function(response) {
             if (response.status == 200) {
                 moveToNextStep(currentStep);
- 
+             if(currentStep == 5){
+                $('#manage_lot').modal('hide');
+
+             }
                
             } else if (response.status === 422) {
                 for (const key in response.message) {
@@ -198,9 +203,10 @@ function moveToNextStep(currentStep) {
 
 $(document).on('click' , '.previous' , function(){
     var $form = $(this).closest('form.lotform_process');
-     
-     var closestFieldset = $(this).closest('fieldset');
- 
+    var closestFieldset = $(this).closest('fieldset');
+
+var currentStep = $('fieldset').index(closestFieldset);
+   
     var currentStep = $('fieldset').index(closestFieldset);
     if (currentStep > 1) {
         $('fieldset').eq(currentStep ).hide();
@@ -213,16 +219,29 @@ $(document).on('click' , '.previous' , function(){
 
 
 function updateProgressBar(step) {
-    // Assuming you have a progress bar element with a class 'progress-bar'
     var progressBar = $('.progress-bar');
     var totalSteps = $('fieldset').length;
     var progress = (step / totalSteps) * 100;
     progressBar.css('width', progress + '%');
 }
 
-// Initialize the progress bar
-updateProgressBar(currentStep);
+$(document).on('click', '.lot_delete', function () {
+    var lotId = $(this).data('delete');
+    
+    if (confirm('Are you sure you want to delete this lot?')) {
 
+        $.ajax({
+            type: 'GET',
+            url: 'lot/delete/' + lotId,
+            success: function (response) {
+                getAll();
+            },
+            error: function (error) {
+                alert('Error deleting the lot.');
+            }
+        });
+    }
+});
         </script>
         
 @endsection

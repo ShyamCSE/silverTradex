@@ -49,6 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('getQuantity', 'getQuantity')->name('lot.getQuantity');
         Route::post('getAmount', 'getAmount')->name('lot.getAmount');
         Route::post('process', 'process')->name('lot.process');
+        Route::get('/delete/{id}','delete')->name('lot.delete');
+        
     });
     Route::resource('purchasing', PurchaseController::class);
     Route::delete('/purchasing/{purchase}', 'PurchaseController@destroy')->name('purchasing.destroy');
