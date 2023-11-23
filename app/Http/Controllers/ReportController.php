@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportInvestment;
 use App\Exports\PurchaseExport;
+use App\Exports\LotsExport;
 use Illuminate\Http\Request;
 use App\Models\Investment;
 use App\Models\purchase;
@@ -169,8 +170,24 @@ class ReportController extends Controller
                 $lot->where('status' , $request->status );
             }
 
+         
 
             $data = $lot->get()->map( function($value , $key){
+
+                $charges = [
+                    'making_charges',
+                    'courier_charges',
+                    'packaging_additional_charges',
+                    'shipping_charges',
+                    'insurance_charges',
+                    'additional_charges',
+                    'clearance_charges',
+                    'shippment_additional_charges',
+                    'refinary_charges'
+                ];
+
+                $total_charges = array_sum(array_map(function($charge) use ($value) {  return $value->$charge; }, $charges));
+
                
                 return [
                    'sno' => $key + 1,
@@ -179,9 +196,12 @@ class ReportController extends Controller
                   'amount' => $value->amount,
                   'net_weight' => $value->net_weight,
                   'no_of_packages' => $value->no_of_packages,
+                  'loss'   => (($value->quantity - $value->quantity_after_refinery) / $value->quantity) * 100 ?? '',
+                  'total_charges' => $total_charges,
+                  'sell'   => $value->quantity_after_refinery * $value->sell_rate ,
+                  'cash_flow' => (($value->quantity * $value->amount) + $total_charges) - ($value->quantity_after_refinery * $value->sell_rate ),
                   'created_at' => Carbon::parse($value->created_at)->format('d M y , D'),
                   'status' => '<button class="btn ' . ($value->status == 7 ? 'btn-primary ' : 'btn-success ') . '">' . status($value->status) . '</button>',
-
                 ];
             });
 
@@ -193,6 +213,11 @@ class ReportController extends Controller
         }
         return view('pages.reports.lot');
 
+    }
+
+    Public function lotStatementExport(Request $request){
+       
+        return Excel::download(new LotsExport(), 'lotStatement.xlsx');
     }
 
 }

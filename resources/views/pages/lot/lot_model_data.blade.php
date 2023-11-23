@@ -485,7 +485,8 @@
                         <label class="item">
                             Loss (%)
                         </label>
-                        <input type="text" class="form-control" value="{{$lot->loss ?? ''}}"
+                        <input type="text" class="form-control" value="{{ (($lot->quantity - $lot->quantity_after_refinery) / $lot->quantity) * 100 ?? '' }}"
+
                             disabled name="loss" />
                     </div>
                 </div>

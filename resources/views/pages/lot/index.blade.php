@@ -50,6 +50,7 @@
                                     <th>Category</th>
                                     <th> Quantity</th>
                                     <th> Amount</th>
+                                  
                                     <th> Status </th>
                                     <th>Action</th>
                                 </tr>

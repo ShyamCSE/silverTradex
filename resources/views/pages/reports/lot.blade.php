@@ -79,7 +79,11 @@
                                     <th>Quantity </th>
                                     <th>Amount</th>
                                     <th>Net Weight</th>
-                                    <th>No Of Packages</th>
+                                    <!-- <th>No Of Packages</th> -->
+                                    <th> Loss Quantity % </th>
+                                    <th> Total Charges </th>
+                                    <th> Sell </th>
+                                    <th>Cash Flow</th>
                                     <th>Create date</th>
                                     <th>Status</th>
                                 </tr>
@@ -103,7 +107,7 @@
         $('#filter, #category').change(function() {
             getAll();
         });
-        $('#lot_status').change(function(){
+        $('#lot_status').change(function() {
             getAll();
         });
 
@@ -150,8 +154,20 @@
                         {
                             data: 'net_weight'
                         },
+                        // {
+                        //     data: 'no_of_packages'
+                        // },
                         {
-                            data: 'no_of_packages'
+                            data: 'loss'
+                        },
+                        {
+                            data: 'total_charges'
+                        },
+                        {
+                            data: 'sell'
+                        },
+                        {
+                            data: 'cash_flow'
                         },
                         {
                             data: 'created_at'
@@ -188,10 +204,10 @@
 
 
     function exportAll() {
-        let url = '{{ route("report.purchaseStatement.export") }}';
+        let url = '{{ route("report.lotStatement.export") }}';
         var link = document.createElement('a');
         link.href = url;
-        link.download = 'purchaseStatement.xlsx';
+        link.download = 'lotStatement.xlsx';
         link.click();
     }
 </Script>

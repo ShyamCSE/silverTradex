@@ -27,6 +27,7 @@ class LotController extends Controller
                 'category' => $value->category->name ?? '',
                 'quantity' => $value->quantity,
                 'amount' => $value->amount,
+                
                 'status' => '<button class="lot-action btn ' . ($value->status == 7 ? 'btn-primary ' : 'btn-success ') . ' btn-sm" data-id="' . $value->id . '" > <i class="fas fa-status" > </i>' . status($value->status) . ' </button>',
                 'options' => '<button class="btn btn-sm btn-danger lot_delete " data-delete="'. $value->id  .'"> <i class="fas fa-trash" > </i> Delete</button>'
             ];
