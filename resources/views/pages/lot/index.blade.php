@@ -166,16 +166,27 @@ $(document).on('click', '.next', function(e) {
     var closestFieldset = $(this).closest('fieldset');
 
    var currentStep = $('fieldset').index(closestFieldset);
- 
+
+   var formData = new FormData($form[0]);
     $.ajax({
         type: $form.attr('method'),
         url: $form.attr('action'),
-        data: $form.serialize(),
+        data: formData,
+        contentType: false,
+        processData: false,
         success: function(response) {
             if (response.status == 200) {
                 moveToNextStep(currentStep);
              if(currentStep == 5){
+                
                 $('#manage_lot').modal('hide');
+                Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: " Lot Completed Successfully",
+                showConfirmButton: false,
+                timer: 1500
+                });
 
              }
                
@@ -243,6 +254,29 @@ $(document).on('click', '.lot_delete', function () {
         });
     }
 });
+
+
+$(document).on('input', '#quantity_after_refinery', function() {
+    let qty = parseFloat($('#quantity').val()) || 0; 
+    let qar = parseFloat($('#quantity_after_refinery').val()) || 0; 
+        if (qar > qty) {
+            $('#quantity_after_refinery').closest('.form-group').find('.text-danger').html('Quantity after refinery cannot be more than quantity');
+        } else {
+            $('#quantity_after_refinery').closest('.form-group').find('.text-danger').html(''); 
+            let percentageLoss = ((qty - qar) / qty) * 100;
+            $('#loss').val(percentageLoss.toFixed(2) + '%');
+        }
+
+});
+
+
+$(document).on('input' , '#sell_rate' , function(){
+     let sell_rate = $('#sell_rate').val();
+     let qut_a_r = $('#quantity_after_refinery').val();
+
+     $('#sell_amount').val( qut_a_r * sell_rate);
+})
+
         </script>
         
 @endsection

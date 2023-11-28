@@ -77,8 +77,8 @@
         </form>
     </fieldset>
 
-    <fieldset class="fieldset-step " style=" @if($lot->status == 2) display:block @endif " >
-        <form class="lotform_process" method="post" action="{{route('lot.process')}}">
+    <fieldset class="fieldset-step" style=" @if($lot->status == 2) display:block @endif " >
+        <form class="lotform_process" method="post" action="{{route('lot.process')}}"  enctype="multipart/form-data" >
             @csrf
             <input type="hidden" name="status" value="3">
             <input type="hidden" name="id" value="{{ $lot->id }}">
@@ -109,7 +109,7 @@
                         <label class="item">
                            Agent Mobile
                         </label>
-                        <input type="text" class="form-control"
+                        <input type="number" class="form-control"
                            name="agent_mobile" value="{{ $lot->agent_mobile }}" id="agent_mobile" />
                            <span class="text-danger"></span>
                     </div>
@@ -129,7 +129,7 @@
                         <label class="item">
                             No. Of Packages
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->no_of_packages ?? ''}}"
+                        <input type="number" step="0.01" class="form-control" value="{{ $lot->no_of_packages ?? ''}}"
                             name="no_of_packages" id="no_of_packages" />
                             <span class="text-danger"></span>
                     </div>
@@ -139,7 +139,7 @@
                         <label class="item">
                             Net Weight (Kg)
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->net_weight ?? ''}}"
+                        <input type="number" step="0.01" class="form-control" value="{{ $lot->net_weight ?? ''}}"
                             name="net_weight" id="net_weight"/>
                             <span class="text-danger"></span>
                     </div>
@@ -149,7 +149,7 @@
                         <label class="item">
                             Gross Weight (Kg)
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->gross_weight ?? ''}}"
+                        <input type="number"  step="0.01" class="form-control" value="{{ $lot->gross_weight ?? ''}}"
                             name="gross_weight"  id="gross_weight"/>
                             <span class="text-danger"></span>
                     </div>
@@ -169,7 +169,7 @@
                         <label class="item">
                             Courier Charges
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->courier_charges ?? '' }}" name="courier_charges" id="courier_charges" />
+                        <input type="number" class="form-control" value="{{ $lot->courier_charges ?? '' }}" name="courier_charges" id="courier_charges" />
                         <span class="text-danger"></span>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                         <label class="item">
                             Additional Charges
                         </label>
-                        <input type="text" class="form-control" name="packaging_additional_charges" value="{{ $lot->packaging_additional_charges ?? ''}}" id="packaging_additional_charges" />
+                        <input type="number" class="form-control" name="packaging_additional_charges" value="{{ $lot->packaging_additional_charges ?? ''}}" id="packaging_additional_charges" />
                         <span class="text-danger"></span>
                     </div>
                 </div>
@@ -188,13 +188,18 @@
                         <label class="item">
                             Preliminary Document
                         </label>
-                        <input type="file" class="form-control" name="preliminary_document" id="preliminary_document"  />
+                        <input type="file" class="form-control" name="preliminary_document" id="preliminary_document" />
+                        
                         @if($lot->preliminary_document != null && isset($lot->preliminary_document))
-                           <span class="text-success">  <a href="{{asset( $lot->preliminary_document )}}"> Uploded </a></span>
-                           @endif
-                           <span class="text-danger"></span>
+                            <span class="text-success">
+                                <a href="{{ asset($lot->preliminary_document) }}"><i class="fa fa-file" aria-hidden="true"></i> Uploaded</a>
+                            </span>
+                        @endif
+
+                        <span class="text-danger"></span>
                     </div>
                 </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <label class="item">
@@ -293,7 +298,7 @@
                         <label class="item">
                             Port Of Discharge
                         </label>
-                        <input type="text" class="form-control" value="{{ $lot->port_of_discharge ?? ''}}" id="port_of_discharge" />
+                        <input type="text" class="form-control" name="port_of_discharge" value="{{ $lot->port_of_discharge ?? ''}}" id="port_of_discharge" />
                         <span class="text-danger"></span>
                     </div>
                 </div>
@@ -343,7 +348,7 @@
     </fieldset>
 
     <fieldset class="fieldset-step" style=" @if($lot->status == 4) display:block @endif " >
-        <form class="lotform_process" method="post" action="{{route('lot.process')}}">
+        <form class="lotform_process" method="post" action="{{route('lot.process')}}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="status" value="5">
             <input type="hidden" name="id" value="{{ $lot->id }}">
@@ -396,7 +401,7 @@
                             value="{{ $lot->gross_weight ?? '' }}" name="gross_weight" />
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                         <label class="item">
                             Status
@@ -407,7 +412,7 @@
                         </select>
                         <span class="text-danger"></span>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                         <label class="item">
@@ -423,6 +428,7 @@
                             Additional Charges
                         </label>
                         <input type="text" id="shippment_additional_charges" class="form-control" value="{{ $lot->shippment_additional_charges ?? ''}}" name="shippment_additional_charges" />
+                        <span class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -430,13 +436,17 @@
                         <label class="item">
                             Receipt of Shipment
                         </label>
-                        <input type="file" class="form-control"  name="receipt_of_shipment" id="receipt_of_shipment"/>
+                        <input type="file" class="form-control" name="receipt_of_shipment" id="receipt_of_shipment" />
                         <span class="text-danger"></span>
+
                         @if(isset($lot->receipt_of_shipment) && $lot->receipt_of_shipment != null)
-                        <span class="text-success">  <a href="{{ asset($lot->receipt_of_shipment)}}"> Uploaded </a></span>
+                            <span class="text-success">
+                                <a href="{{ asset($lot->receipt_of_shipment) }}" target="_blank" > Uploaded </a>
+                            </span>
                         @endif
                     </div>
                 </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <label class="item">
@@ -476,7 +486,7 @@
                             Quantity After Refinery
                         </label>
                         <input type="text" class="form-control" value="{{ $lot->quantity_after_refinery ?? ''}}"
-                            name="quantity_after_refinery" id="quantity_after_refinery" />
+                            name="quantity_after_refinery" id="quantity_after_refinery" min="1" max="{{ $lot->quantity }}" />
                             <span class="text-danger"></span>
                     </div>
                 </div>
@@ -485,9 +495,21 @@
                         <label class="item">
                             Loss (%)
                         </label>
-                        <input type="text" class="form-control" value="{{ (($lot->quantity - $lot->quantity_after_refinery) / $lot->quantity) * 100 ?? '' }}"
+                        <?php
+                            $initialQuantity = $lot->quantity;
+                            $quantityAfterRefinery = $lot->quantity_after_refinery;
 
-                            disabled name="loss" />
+                            // Ensure that both values are numeric to avoid division by zero
+                            if (is_numeric($initialQuantity) && is_numeric($quantityAfterRefinery) && $initialQuantity != 0) {
+                                $percentageLoss = (($initialQuantity - $quantityAfterRefinery) / $initialQuantity) * 100;
+                                $loss =  number_format($percentageLoss, 2) . '%';
+                            } else {
+                                $loss = 'Invalid values for calculation.';
+                            }
+                            ?>
+
+                        <input type="text" class="form-control" value="{{ $loss }}" disabled name="loss"  id="loss" />
+                       
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -503,22 +525,23 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                         <label class="item">
-                            Refinary Report
+                            Refinery Report
                         </label>
-                        <input type="file" class="form-control" value=""
-                            name="refinary_report" id="refinary_report" />
-                            <span class="text-danger"></span>
-                            @if(isset($lot->refinary_report ) && $lot->refinary_report != '')
-                            <a href="{{ asset($lot->refinary_report)}}"> Uploaded</a>
-                            @endif
+                        <input type="file" class="form-control" value="" name="refinery_report" id="refinery_report" />
+                        <span class="text-danger"></span>
+
+                        @if(isset($lot->refinery_report) && $lot->refinery_report != '')
+                            <a href="{{ asset($lot->refinery_report) }}" target="_blank"> Uploaded</a>
+                        @endif
                     </div>
                 </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <label class="item">
                             Remarks
                         </label>
-                        <textarea rows="3" cols="3" class="form-control" id="refinery_report" name="refinery_report" >{{ $lot->refinery_report ?? '' }}</textarea>
+                        <textarea rows="3" cols="3" class="form-control" id="refinery_remarks" name="refinery_remarks" >{{ $lot->refinery_remarks ?? '' }}</textarea>
                         <span class="text-danger"></span>
                     </div>
                 </div>
@@ -532,7 +555,7 @@
     </fieldset>
     <fieldset class="fieldset-step mn-2" style="@if($lot->status == 6 || $lot->status == 7) display:block @endif">
 
-        <form class="lotform_process" method="post" action="{{route('lot.process')}}">
+        <form class="lotform_process" method="post" action="{{route('lot.process')}}"  enctype="multipart/form-data" >
             @csrf
             <input type="hidden" name="status" value="7">
             <input type="hidden" name="id" value="{{ $lot->id }}">
@@ -553,7 +576,7 @@
                             Quantity
                         </label>
                         <input type="text" class="form-control" disabled
-                            value="" name="Item" />
+                            value="{{$lot->quantity_after_refinery ?? ''}}" name="Item" />
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -571,21 +594,12 @@
                         <label class="item">
                             Amount
                         </label>
-                        <input type="text" class="form-control" id="sell_amount" value="{{ $lot->sell_amount ?? ''}}"
+                        <input type="text" class="form-control" id="sell_amount" value="{{ $lot->quantity_after_refinery *  $lot->sell_rate }}" disabled
                             name="sell_amount" />
                             <span class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="form-group">
-                        <label class="item">
-                            Status
-                        </label>
-                        <select class="form-control">
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                </div>
+              
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <label class="item">

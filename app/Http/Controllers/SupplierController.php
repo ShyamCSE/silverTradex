@@ -32,6 +32,7 @@ class SupplierController extends Controller
                 'name' => $supplier->name,
                 'phone' => $supplier->phone,
                 'email' => $supplier->email,
+                'total_quantity' => $supplier->purchase->sum('quantity'),
                 'company_name' => $supplier->componey_name,
                 'address' => $supplier->address,
                 'status' => $statusButton,

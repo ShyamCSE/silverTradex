@@ -11,4 +11,8 @@ class Category extends Model
     use HasFactory , SoftDeletes;
 
     protected $fillable = ['name'];
+
+    Public function purchase(){
+        return $this->hasMany(purchase::class);
+    }
 }

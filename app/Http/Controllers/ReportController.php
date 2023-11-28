@@ -118,7 +118,6 @@ class ReportController extends Controller
             }
 
             $data = $purchase->get()->map( function($value ){
-
                 return [
                   'sno' => $value->index + 1,
                   'category' => $value->category?->name,
@@ -133,8 +132,8 @@ class ReportController extends Controller
             });
 
             $overAll['credit'] = $purchase->sum('quantity');
-            $overAll['debit'] = $purchase->where('status', [0, 2])->sum('quantity') - $purchase->where('status', [0, 2])->sum('current_quantity');
-            $overAll['current'] = $overAll['credit'] - $overAll['debit'];            
+            $overAll['debit'] = $purchase->sum('quantity') - $purchase->sum('current_quantity');
+            $overAll['current'] = $overAll['credit'] - $overAll['debit'];        
 
             return response()->json(['all' => $data, 'overall' => $overAll]);
 
@@ -199,15 +198,17 @@ class ReportController extends Controller
                   'loss'   => (($value->quantity - $value->quantity_after_refinery) / $value->quantity) * 100 ?? '',
                   'total_charges' => $total_charges,
                   'sell'   => $value->quantity_after_refinery * $value->sell_rate ,
-                  'cash_flow' => (($value->quantity * $value->amount) + $total_charges) - ($value->quantity_after_refinery * $value->sell_rate ),
+                  'cash_flow' => number_format((($value->quantity * $value->amount) + $total_charges) - ($value->quantity_after_refinery * $value->sell_rate ), 2),
                   'created_at' => Carbon::parse($value->created_at)->format('d M y , D'),
                   'status' => '<button class="btn ' . ($value->status == 7 ? 'btn-primary ' : 'btn-success ') . '">' . status($value->status) . '</button>',
                 ];
             });
 
 
+
             $overall['total_lot'] = $lot->count();
             $overall['complete_lot'] = $lot->where('status' , 7)->count();
+            $overall['total_lot_quantity'] = $lot->sum('quantity');
 
             return response()->json(['all' => $data , 'overall' => $overall ]);
         }

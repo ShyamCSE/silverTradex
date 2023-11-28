@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class supplier extends Model
+class Currency extends Model
 {
     use HasFactory;
-
-
-    Public function purchase(){
-        return $this->hasMany(purchase::class);
-    }
 }

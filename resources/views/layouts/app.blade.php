@@ -16,6 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="{{asset('build/assets/js/custom1.js')}}" type="text/javascript" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -60,30 +61,31 @@
                     <div class="d-flex align-items-center">
 
                         <div class="dropdown ms-1 topbar-head-dropdown header-item">
-                            <button type="button" class="btn btn-icon btn-topbar btn-ghost-primary rounded-circle"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img id="header-lang-img" src="{{asset('build/assets/images/flags/us.svg')}}" title="USD" alt="Header Language"
-                                    height="20" class="rounded">
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
+                            <select name="currency" id="currency">
+                                <option value=""></option>
+                            </select>
+                            <!-- <div class="dropdown">
+                                <button class="btn  dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{asset('build/assets/images/flags/us.svg')}}" title="USD" alt="user-image" class="me-2 rounded" height="18">
+                                    USD
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"> -->
+                                 
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language py-2"
-                                    data-lang="en" title="USD">
-                                    <img src="{{asset('build/assets/images/flags/us.svg')}}" title="USD" alt="user-image" class="me-2 rounded"
-                                        height="18">
-                                    <span class="align-middle">USD</span>
-                                </a>
+                                    <!-- item-->
+                                    <!-- <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="en" title="USD">
+                                        <img src="{{asset('build/assets/images/flags/us.svg')}}" title="USD" alt="user-image" class="me-2 rounded" height="18">
+                                        <span class="align-middle">USD</span>
+                                    </a> -->
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp"
-                                    title="IDR">
-                                    <img src="{{asset('build/assets/images/flags/indo.svg')}}" title="IDR" alt="user-image" class="me-2 rounded"
-                                        height="18">
-                                    <span class="align-middle">IDR</span>
-                                </a>
+                                    <!-- item-->
+                                    <!-- <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp" title="IDR">
+                                        <img src="{{asset('build/assets/images/flags/indo.svg')}}" title="IDR" alt="user-image" class="me-2 rounded" height="18">
+                                        <span class="align-middle">IDR</span>
+                                    </a> -->
+                                <!-- </div>
+                            </div> -->
 
-                            </div>
                         </div>
 
                         <div class="ms-1 header-item d-none d-sm-flex">
@@ -237,9 +239,9 @@
                         </li>
                         <div class="help-box text-center">
                             <img src="{{asset('build/assets/images/create-invoice.png')}}" class="img-fluid" alt="">
-                            <div class="mt-3">
+                            <!-- <div class="mt-3">
                                 <a href="profit-change.html" class="btn btn-primary">Change Profit Percentage</a>
-                            </div>
+                            </div> -->
                         </div>
 
                     </ul>
@@ -294,9 +296,16 @@
 
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-    
-
+    <script>
+    // JavaScript to handle language selection
+    document.querySelectorAll('.dropdown-item.language').forEach(function(item) {
+        item.addEventListener('click', function() {
+            var selectedLang = this.getAttribute('data-lang');
+            document.getElementById('languageDropdown').innerHTML = this.innerHTML; // Update button text
+             alert(selectedLang);
+        });
+    });
+</script>
 </body>
 
 

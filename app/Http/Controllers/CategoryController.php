@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     Public function index(){
-        $category = Category::latest()->get();
+        $category = Category::with('purchase')->latest()->get();
+      
         return view('pages.category' , compact('category'));
     }
 

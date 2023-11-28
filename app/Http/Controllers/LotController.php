@@ -164,8 +164,7 @@ class LotController extends Controller
         foreach ($selectedProducts as $selectedProduct) {
             $weightedSum += $selectedProduct['quantity'] * $selectedProduct['rate'];
         }
-        $lot->selectedProducts =  $selectedProducts;
-
+      
         // Calculate the weighted average rate
         $averageRate = $currentQuantity > 0 ? number_format($weightedSum / $currentQuantity, 2) : 0;
 
@@ -233,6 +232,8 @@ class LotController extends Controller
 
     public function process(Request $request)
     {
+
+      
         // return $request->all();
         if ($request->status == 2) {
             $validator = Validator::make($request->all(), [
@@ -246,12 +247,12 @@ class LotController extends Controller
                 'agent_name'  => 'required',
                 'agent_mobile'  => 'required',
                 'packed_by'   =>  'required',
-                'no_of_packages' => 'required|integer',
-                'net_weight'    => 'required|integer',
-                'gross_weight'  => 'required|integer',
+                'no_of_packages' => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
+                'net_weight'    => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
+                'gross_weight'  => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
                 'dimension'     =>  'required',
-                'courier_charges'  => 'required|integer',
-                'packaging_additional_charges' => 'required|integer',
+                'courier_charges'  => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
+                'packaging_additional_charges' => 'nullable|numeric|regex:/^\d+(\.\d{1,2})?$/',
                 'packaging_remarks' => 'nullable|min:4',
             ]);
         }
@@ -272,7 +273,7 @@ class LotController extends Controller
                 'received_date'      => 'required|date',
                 'receipt_no'         => 'required|integer',
                 'clearance_charges'  => 'required|integer',
-                'shippment_additional_charges'  => 'required|integer',
+                'shippment_additional_charges'  => 'nullable|integer',
                 'shippment_remarks' =>  'nullable|min:4',
             ]);
         }
@@ -281,14 +282,14 @@ class LotController extends Controller
             $validator = Validator::make($request->all(), [
                 'quantity_after_refinery'  =>  'required|integer',
                 'refinary_charges'    =>    'required|integer',
-                'refinery_report'     => 'required',
+                // 'refinery_report'     => 'required',
             ]);
         }
 
         if ($request->status == 7) {
             $validator = Validator::make($request->all(), [
                 'sell_rate'  =>  'required|integer',
-                'sell_amount'    =>    'required|integer',
+                // 'sell_amount'    =>    'required|integer',
                 'sell_remarks'     => 'required',
             ]);
         }
@@ -316,11 +317,21 @@ class LotController extends Controller
             $lot->packaging_additional_charges = $request->packaging_additional_charges;
             $lot->packaging_remarks  = $request->packaging_remarks;
             $lot->packed_by   = $request->packed_by;
+
+            
+
+            if ($request->hasFile('preliminary_document')) {
+                $uploadedFile = $request->file('preliminary_document');
+                $uniqueFileName = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+                $photoPath = $uploadedFile->move('files', $uniqueFileName );
+                $lot->preliminary_document =  $photoPath;
+            }
         }
 
         if ($request->status == 4) {
             $lot->date_of_shipping = $request->date_of_shipping;
             $lot->port_of_loading = $request->port_of_loading;
+            $lot->port_of_discharge = $request->port_of_discharge;
             $lot->shipping_charges = $request->shipping_charges;
             $lot->insurance_charges = $request->insurance_charges;
             $lot->additional_charges = $request->additional_charges;
@@ -333,13 +344,32 @@ class LotController extends Controller
             $lot->clearance_charges = $request->clearance_charges;
             $lot->shippment_additional_charges = $request->shippment_additional_charges;
             $lot->shippment_remarks = $request->shippment_remarks;
+
+
+            if ($request->hasFile('receipt_of_shipment')) {
+              
+                $uploadedFile = $request->file('receipt_of_shipment');
+                $uniqueFileName = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+                $photoPath = $uploadedFile->move('files', $uniqueFileName );
+                $lot->receipt_of_shipment =  $photoPath;
+            }
+  
         }
 
 
         if ($request->status == 6) {
             $lot->quantity_after_refinery = $request->quantity_after_refinery;
+            $lot->loss = $request->loss;
             $lot->refinary_charges = $request->refinary_charges;
-            $lot->refinery_report = $request->refinery_report;
+            $lot->refinery_remarks = $request->refinery_remarks;
+
+            if ($request->hasFile('refinery_report')) {
+                $uploadedFile = $request->file('refinery_report');
+                $uniqueFileName = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+                $photoPath = $uploadedFile->move('files', $uniqueFileName );
+                $lot->refinary_report =  $photoPath;
+            }
+
         }
 
         if ($request->status == 7) {

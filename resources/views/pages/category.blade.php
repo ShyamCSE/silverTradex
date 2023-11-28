@@ -45,7 +45,8 @@
                                                         <th scope="col">Sr. No.</th>
                                                      
                                                         <th scope="col">Category Name</th>
-                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Total Quantity </th>
+                                                        <th scope="col">Current Available </th>
                                                          <th scope="col" style="width: 12%;">Action</th>
                                                     </tr>
                                                 </thead>
@@ -57,24 +58,20 @@
                                                         <td>{{ $loop->iteration }}</td>
                                                        
                                                         <td>{{ $item->name }}</td>
-                                                        <td>{{ $item->created_at }}</td>
+                                                        <td>{{ $item->purchase->sum('quantity') }}</td>
+                                                        <td>{{ $item->purchase->sum('current_quantity') }}</td>
                                                         <td>
-                                                           
-                                                                    <button  data-bs-toggle="modal" data-bs-target="#editcategoryModal" class=" btn btn-success btn-sm edit-category" data-category-id="{{ $item }}">
-                                                                        <i class="las la-pen fs-18 align-middle me-2 text-muted"></i> Edit
-                                                                    </button>
-                                                                
-                                                                    <a class="btn btn-danger btn-sm delete-category"  data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
-                                                                        <i class="las la-trash-alt fs-18 align-middle me-2 text-muted"></i> Delete
-                                                                      </a>
-                                                                      
-                                                             
+                                                        <button  data-bs-toggle="modal" data-bs-target="#editcategoryModal" class=" btn btn-success btn-sm edit-category" data-category-id="{{ $item }}">
+                                                        <i class="las la-pen fs-18 align-middle me-2 text-muted"></i> Edit
+                                                            </button>
+                                                        
+                                                            <a class="btn btn-danger btn-sm delete-category"  data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
+                                                                <i class="las la-trash-alt fs-18 align-middle me-2 text-muted"></i> Delete
+                                                            </a>
                                                             </ul>
                                                         </td>
                                                     </tr>
                                                     @endforeach
-                                                    
-                                                  
                                                     
                                                 </tbody><!-- end tbody -->
                                             </table><!-- end table -->

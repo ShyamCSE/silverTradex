@@ -17,6 +17,10 @@
 
             <div class="row">
                 <div class="col-sm-auto ms-auto d-flex">
+                <!-- <div class="mx-3">
+                        <h6>Total  Quantity</h6>
+                        <span id="total_lot_quantity">0</span>
+                    </div> -->
                     <div class="mx-3">
                         <h6>Total Lot</h6>
                         <span id="total_lot">0</span>
@@ -134,6 +138,7 @@
                 console.log(response);
                 $('#total_lot').html(response.overall.total_lot);
                 $('#complete_lot').html(response.overall.complete_lot);
+                $('#total_lot_quantity').html(response.overall.total_lot_quantity);
                 // $('#current').html(response.overall.current);
                 $('#myTable').DataTable().destroy();
                 $('#myTable').DataTable({

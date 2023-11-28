@@ -32,6 +32,7 @@
                                     <th> Name </th>
                                     <th> Mobile</th>
                                     <th> Email </th>
+                                    <th> Quantity </th>
                                     <th>Company Name</th>
                                     <th> Status </th>
                                     <th>Action</th>
@@ -219,6 +220,7 @@ $(document).ready(function () {
                 { data: 'name' },
                 { data: 'phone' },
                 { data: 'email' },
+                { data: 'total_quantity'},
                 { data: 'company_name' },
                 { data: 'status' },
                 { data: 'options' }
