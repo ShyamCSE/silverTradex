@@ -28,7 +28,7 @@ class PurchaseController extends Controller
                 'quality' => $item->quality,
                 'quantity' => $item->quantity,
                 'current_quantity' => $item->current_quantity,
-                'rate'  => $item->rate,
+                'rate'  => getPrice($item->rate),
                 'date'  =>  Carbon::parse($item->date)->format('d M y , D'),
                 'photo' => $item->photo ? '<img  src="' . asset( $item->photo) . '" class="purchaseImg">' : null,
                 'receipt' => $item->receipt ? '<a target="_blank" href="' . asset($item->receipt) . '"> Open </a>' : null,

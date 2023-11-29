@@ -1,5 +1,7 @@
 <?php 
 
+use App\Models\Currency;
+
 if (!function_exists('get_date')) {
     function get_date($filter)
     {
@@ -67,4 +69,27 @@ if (!function_exists('get_date')) {
                 return "Unknown";
         }
     }
+
+
+    if (!function_exists('getPrice')) {
+        function getPrice($price)
+        {
+            // Convert $price to a numeric value
+            $numericPrice = is_numeric($price) ? floatval($price) : 0;
+    
+            $selectedCurrency = Currency::where('selected', 1)->first();
+            if ($selectedCurrency) {
+                $processedPrice = $numericPrice * $selectedCurrency->value;
+                $processedPrice = round($processedPrice, 2);
+                $formattedPrice = number_format($processedPrice, 2);
+                return $formattedPrice;
+            }
+            return number_format($numericPrice, 2);
+        }
+    }
+    
+    
+    
 }
+
+

@@ -23,6 +23,7 @@
   {{-- data table css  --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+  
 
 
 </head>
@@ -34,14 +35,7 @@
             <div class="layout-width">
                 <div class="navbar-header">
                     <div class="d-flex">
-                        <!-- LOGO -->
-                        <!-- <div class="navbar-brand-box horizontal-logo">
-                            <a href="{{route('dashboard')}}" class="logo logo-dark">
-                                <span class="logo-lg">
-                                    <img src="{{asset('build/assets/images/logo-dark.png')}}" alt="" height="32">
-                                </span>
-                            </a>
-                        </div> -->
+                      
 
                         <button type="button"
                             class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
@@ -53,38 +47,17 @@
                             </span>
                         </button>
 
-                        <!-- App Search-->
+                  
                   
 
                     </div>
 
                     <div class="d-flex align-items-center">
 
-                        <div class="dropdown ms-1 topbar-head-dropdown header-item">
-                            <select name="currency" id="currency">
-                                <option value=""></option>
-                            </select>
-                            <!-- <div class="dropdown">
-                                <button class="btn  dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{asset('build/assets/images/flags/us.svg')}}" title="USD" alt="user-image" class="me-2 rounded" height="18">
-                                    USD
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"> -->
-                                 
-
-                                    <!-- item-->
-                                    <!-- <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="en" title="USD">
-                                        <img src="{{asset('build/assets/images/flags/us.svg')}}" title="USD" alt="user-image" class="me-2 rounded" height="18">
-                                        <span class="align-middle">USD</span>
-                                    </a> -->
-
-                                    <!-- item-->
-                                    <!-- <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp" title="IDR">
-                                        <img src="{{asset('build/assets/images/flags/indo.svg')}}" title="IDR" alt="user-image" class="me-2 rounded" height="18">
-                                        <span class="align-middle">IDR</span>
-                                    </a> -->
-                                <!-- </div>
-                            </div> -->
+                        <div class=" header-item">
+                        <select name="currency" class="form-control" id="currency">
+                        </select>
+                           
 
                         </div>
 
@@ -139,15 +112,7 @@
                         <img src="{{asset('build/assets/images/logo-dark.png')}}" alt="" height="35">
                     </span>
                 </a>
-                <!-- Light Logo-->
-                <!-- <a href="{{route('dashboard')}}" class="logo logo-light">
-                    <span class="logo-sm">
-                        <img src="{{asset('build/assets/images/logo-sm.png')}}" alt="" height="22">
-                    </span>
-                    <span class="logo-lg">
-                        <img src="{{asset('build/assets/images/logo-light.png')}}" alt="" height="21">
-                    </span>
-                </a> -->
+              
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
                     id="vertical-hover">
                     <i class="ri-record-circle-line"></i>
@@ -297,14 +262,87 @@
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
-    // JavaScript to handle language selection
-    document.querySelectorAll('.dropdown-item.language').forEach(function(item) {
-        item.addEventListener('click', function() {
-            var selectedLang = this.getAttribute('data-lang');
-            document.getElementById('languageDropdown').innerHTML = this.innerHTML; // Update button text
-             alert(selectedLang);
-        });
+
+
+ $(document).ready( function(){
+    getCurrency();
+    $('#currency').change( function(){
+        updateCurrency();
+    })
+ })
+
+ function getCurrency() {
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        method: 'get',
+        url: '{{ route("currency.index") }}',
+        data: {
+            '_token': csrfToken
+        },
+        success: function(response) {
+    var currencySelect = $('#currency');
+    currencySelect.empty();
+
+    $.each(response.data, function(index, currency) {
+        var option = createOption(currency);
+
+        if (currency.selected === 1) {
+            option.attr('selected', 'selected');
+        }
+
+        if (currency.flag) {
+            var img = createImage(currency.flag, currency.currency);
+            option.prepend(img);
+        }
+
+        currencySelect.append(option);
     });
+},
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function createOption(currency) {
+    return $('<option>', {
+        value: currency.id,
+        text: currency.currency.toUpperCase(),
+    });
+}
+
+function createImage(src, alt) {
+    console.log("Image source:", src);
+    return $('<img>', {
+        src: src,
+        alt: alt + ' Flag',
+        height: 20,
+        width: 20
+    });
+}
+
+function updateCurrency() {
+    var currency_id = $('#currency').val();
+   
+    $.ajax({
+        method: 'get',
+        url: "{{ route('currency.edit', ['currency' => '_currency_']) }}".replace('_currency_', currency_id),
+        success: function(response) {
+            if(response.status == true){
+                getCurrency();
+                location.reload()
+            }else{
+                console.log('somting want wrong in currency update ');
+            }
+          
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+  
 </script>
 </body>
 

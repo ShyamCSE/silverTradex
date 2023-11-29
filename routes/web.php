@@ -8,6 +8,8 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +31,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class , 'index'])->name('dashboard');
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('investment', InvestmentController::class);
     Route::resource('supplier', SupplierController::class);
+    Route::resource('currency', CurrencyController::class);
 
     Route::controller(ReportController::class)->prefix('report')->group(function () {
         Route::get('/','index')->name('report');

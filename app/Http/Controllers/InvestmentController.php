@@ -30,7 +30,7 @@ class InvestmentController extends Controller
                 'name' => $Investment->name,
                 'phone' => $Investment->mobile,
                 'email' => $Investment->email,
-                'amount' => $Investment->amount,
+                'amount' => getPrice($Investment->amount),
                 'invest_date' => $Investment->invest_date,
              
                 'options' => '<button class="btn btn-success btn-sm InvesterView" data-invester="' . htmlspecialchars(json_encode($Investment)) . '"><i class="fas fa-eye"></i> View</button> <button class="btn btn-sm btn-danger investerDelete" data-invester="' . $Investment->id . '"><i class="fas fa-trash"></i> Delete</button>',

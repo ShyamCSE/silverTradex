@@ -27,21 +27,16 @@
                 <div class="col-xl-12">
                     <div class="card dash-mini">
                         <div class="card-header border-0 align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">This Month's Overview</h4>
+                            <h4 class="card-title mb-0 flex-grow-1">Overview</h4>
                             <div class="flex-shrink-0">
-                                <div class="dropdown card-header-dropdown">
-                                    <a class="text-reset" href="#" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <span class="fw-semibold text-uppercase fs-14">Sort by: </span><span
-                                            class="text-muted">Current Month<i
-                                                class="las la-angle-down fs-12 ms-2"></i></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">This Month</a>
-                                        <a class="dropdown-item" href="#">Last Month</a>
-                                        <a class="dropdown-item" href="#">Last 6 Months</a>
-                                        <a class="dropdown-item" href="#">Current Year</a>
-                                    </div>
+                                <div class="card-header-dropdown">
+                                   <select name="orverviewFilter" id="orverviewFilter" class="form-control">
+                                    <option value="daily">Daily</option>
+                                    <option value="week">Week</option>
+                                    <option value="month" selected>Month</option>
+                                    <option value="year">Year</option>
+                                     <option value="all">All</option>
+                                   </select>
                                 </div>
                             </div>
                         </div><!-- end card header -->
@@ -51,9 +46,8 @@
                                 <div class="col-lg-3 mini-widget pb-3 pb-lg-0">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1">
-                                            <h2 class="mb-0 fs-24"><span class="counter-value"
-                                                    data-target="256">54</span><span class="ms-1">kg</span></h2>
-                                            <h5 class="text-muted fs-16 mt-2 mb-0">Silver In Stock</h5>
+                                            <h2 class="mb-0 fs-24"><span class="counter_value">54</span><span class="ms-1">kg</span></h2>
+                                            <h5 class="text-muted fs-16 mt-2 mb-0">Total In Stock</h5>
                                         </div>
                                         <div class="flex-shrink-0 text-end dash-widget">
                                             <div id="mini-chart1" data-colors='["--in-primary", "--in-light"]'
@@ -65,13 +59,13 @@
                                 <div class="col-lg-3 mini-widget py-3 py-lg-0">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1">
-                                            <h2 class="mb-0 fs-24"><span class="counter-value"
-                                                    data-target="3864">124</span><span class="ms-1">USD</span>
+                                            <h2 class="mb-0 fs-24"><span class="balanceAmount"
+                                                    >0</span>
                                             </h2>
                                             <h5 class="text-muted fs-16 mt-2 mb-0">Balance Amount</h5>
                                         </div>
                                         <div class="flex-shrink-0 text-end dash-widget">
-                                            <div id="mini-chart2" data-colors='["--in-primary", "--in-light"]'
+                                            <div id="mini-chart2" data-colors='["--in-primary"]'
                                                 class="apex-charts"></div>
                                         </div>
                                     </div>
@@ -80,12 +74,12 @@
                                 <div class="col-lg-3 mini-widget pt-3 pt-lg-0">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1">
-                                            <h2 class="mb-0 fs-24"><span class="counter-value"
-                                                    data-target="12">1</span></h2>
+                                            <h2 class="mb-0 fs-24"><span class="lot"
+                                                    >1</span></h2>
                                             <h5 class="text-muted fs-16 mt-2 mb-0">Dispatched Lot</h5>
                                         </div>
                                         <div class="flex-shrink-0 text-end dash-widget">
-                                            <div id="mini-chart3" data-colors='["--in-primary", "--in-light"]'
+                                            <div id="mini-chart3" data-colors='["--in-primary"]'
                                                 class="apex-charts"></div>
                                         </div>
                                     </div>
@@ -329,6 +323,112 @@
     <!-- End Page-content -->
 
     
+<script>
+    $(document).ready( function(){
+        overView();
+    });
 
+    function overView() {
+    $.ajax({
+        method: 'get',
+        url: '{{ route("dashboard") }}',
+        success: function (response) {
+            // Extract data from the response
+            var categories = response.stock.map(function (item) {
+                return item.name;
+            });
+
+            var quantities = response.stock.map(function (item) {
+                return item.quantity;
+            });
+            var sum_stock = response.stock.map(function (item) {
+                return +item.quantity;
+            }).reduce(function (accumulator, currentValue) {
+                return accumulator + currentValue;
+            }, 0);
+           
+           $('.counter_value').html(sum_stock);
+            // Get chart colors
+            var vectorMapWorldLineColors = getChartColorsArray("mini-chart1");
+
+            // Set up ApexCharts options
+            var options = {
+                series: quantities,
+                chart: {
+                    type: "donut",
+                    height: 110
+                },
+                colors: vectorMapWorldLineColors,
+                labels: categories,
+                legend: {
+                    show: false
+                },
+                dataLabels: {
+                    enabled: false
+                }
+            };
+
+            // Render ApexCharts
+            var chart = new ApexCharts(document.querySelector("#mini-chart1"), options);
+            chart.render();
+
+            $('.balanceAmount').html(response.balanceAmount);
+
+var vectorMapWorldLineColors = getChartColorsArray("mini-chart2");
+
+// Set up ApexCharts options
+var options = {
+    series: [response.balanceAmount], // Ensure balanceAmount is an array
+    chart: {
+        type: "donut",
+        height: 110
+    },
+    colors: vectorMapWorldLineColors,
+    labels:['USD'], // Adjust labels based on your response structure
+    legend: {
+        show: false
+    },
+    dataLabels: {
+        enabled: false
+    }
+};
+
+// Render ApexCharts
+var chart = new ApexCharts(document.querySelector("#mini-chart2"), options);
+chart.render();
+
+ $('.lot').html(response.lot);
+
+
+ var vectorMapWorldLineColors = getChartColorsArray("mini-chart3");
+
+// Set up ApexCharts options
+var options = {
+    series: [response.lot], // Ensure balanceAmount is an array
+    chart: {
+        type: "donut",
+        height: 110
+    },
+    colors: vectorMapWorldLineColors,
+    labels:['Dispatched LOT'], // Adjust labels based on your response structure
+    legend: {
+        show: false
+    },
+    dataLabels: {
+        enabled: false
+    }
+};
+
+// Render ApexCharts
+var chart = new ApexCharts(document.querySelector("#mini-chart3"), options);
+chart.render();
+
+
+        }
+    });
+}
+
+
+</script>
 
 @endsection
