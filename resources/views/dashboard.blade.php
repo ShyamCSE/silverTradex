@@ -28,7 +28,7 @@
                     <div class="card dash-mini">
                         <div class="card-header border-0 align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">Overview</h4>
-                            <div class="flex-shrink-0">
+                            <!-- <div class="flex-shrink-0">
                                 <div class="card-header-dropdown">
                                    <select name="orverviewFilter" id="orverviewFilter" class="form-control">
                                     <option value="daily">Daily</option>
@@ -38,7 +38,7 @@
                                      <option value="all">All</option>
                                    </select>
                                 </div>
-                            </div>
+                            </div> -->
                         </div><!-- end card header -->
 
                         <div class="card-body pt-1">
@@ -88,12 +88,12 @@
                                 <div class="col-lg-3 mini-widget pt-3 pt-lg-0">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1">
-                                            <h2 class="mb-0 fs-24"><span class="counter-value"
-                                                    data-target="142">1</span><span class="ms-1">USD</span></h2>
+                                            <h2 class="mb-0 fs-24"><span class="net_profit"
+                                                    >1</span><span class="ms-1">USD</span></h2>
                                             <h5 class="text-muted fs-16 mt-2 mb-0">Net Profit</h5>
                                         </div>
                                         <div class="flex-shrink-0 text-end dash-widget">
-                                            <div id="mini-chart4" data-colors='["--in-primary", "--in-light"]'
+                                            <div id="mini-chart4" data-colors='["--in-primary",'
                                                 class="apex-charts"></div>
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@
                     <div class="card">
                         <div class="card-header border-0 align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">Payment Activity</h4>
-                            <div>
+                            <!-- <div>
                                 <button type="button" class="btn btn-soft-info btn-sm">
                                     ALL
                                 </button>
@@ -123,22 +123,22 @@
                                 <button type="button" class="btn btn-info btn-sm">
                                     1Y
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="card-body py-1">
                             <div class="row gy-2">
                                 <div class="col-md-4">
-                                    <h4 class="fs-22 mb-0">$23,590.00</h4>
+                                    <h4 class="fs-22 mb-0 payment_activity_current" > </h4>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="d-flex main-chart justify-content-end">
                                         <div class="px-4 border-end">
-                                            <h4 class="text-primary fs-22 mb-0">$584k <span
-                                                    class="text-muted d-inline-block fs-17 align-middle ms-0 ms-sm-2">Incomes</span>
+                                            <h4 class="text-primary fs-22 mb-0"> <span class=" payment_activity_credit "></span> <span
+                                                    class="text-muted d-inline-block fs-17 align-middle ms-0 ms-sm-2">Investment</span>
                                             </h4>
                                         </div>
                                         <div class="ps-4">
-                                            <h4 class="text-primary fs-22 mb-0">$324k <span
+                                            <h4 class="text-primary fs-22 mb-0 "> <span class="payment_activity_debit"></span> <span
                                                     class="text-muted d-inline-block fs-17 align-middle ms-0 ms-sm-2">Expenses</span>
                                             </h4>
                                         </div>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                        
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-header border-0 align-items-center d-flex pb-2">
                             <h4 class="card-title mb-0 flex-grow-1">Payment Overview</h4>
                             <div>
@@ -172,7 +172,7 @@
                             </div>
                         </div>
                         <div class="card-body pt-0">
-                            <div id="payment-overview" data-colors='["--in-primary", "--in-light"]'
+                            <div id="payment_overview_data" data-colors='["--in-primary"]'
                                 class="apex-charts" dir="ltr"></div>
                             <div class="row mt-3 text-center">
                                 <div class="col-6 border-end">
@@ -189,7 +189,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 
                 </div>
 
@@ -224,90 +224,76 @@
                             <div class="px-2">
                                 <div class="structure-list d-flex justify-content-between border-bottom">
                                     <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Silver Buying</p>
+                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Making Charges</p>
                                     <div>
-                                        <span class="pe-2 pe-sm-5">$56,236</span>
+                                        <span class="pe-2 pe-sm-5 making_charges"></span>
                                     </div>
                                 </div>
                                 <div class="structure-list d-flex justify-content-between border-bottom">
                                     <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Refinery Charges</p>
+                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Courier Charges</p>
                                     <div>
-                                        <span class="pe-2 pe-sm-5">$12,596</span>
+                                        <span class="pe-2 pe-sm-5 courier_charges"></span>
                                     </div>
                                 </div>
                                 <div class="structure-list d-flex justify-content-between  border-bottom">
                                     <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Shipping/ Courier</p>
+                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Packaging Additional Charge </p>
                                     <div>
-                                        <span class="pe-2 pe-sm-5">$5,568</span>
+                                        <span class="pe-2 pe-sm-5 packaging_additional_charges ">$5,568</span>
                                     </div>
                                 </div>
 
+                                <div class="structure-list d-flex justify-content-between border-bottom">
+                                    <p class="mb-0"><i
+                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Shiping Charges</p>
+                                    <div>
+                                        <span class="pe-2 pe-sm-5 shipping_charges ">$7,261</span>
+                                    </div>
+                                </div>
                                 <div class="structure-list d-flex justify-content-between border-bottom">
                                     <p class="mb-0"><i
                                             class="las la-dot-circle fs-18 text-primary me-2"></i>Insurance Charges</p>
                                     <div>
-                                        <span class="pe-2 pe-sm-5">$7,261</span>
+                                        <span class="pe-2 pe-sm-5 insurance_charges ">$5,142</span>
                                     </div>
                                 </div>
+
+                                <div class="structure-list d-flex justify-content-between border-bottom">
+                                    <p class="mb-0"><i
+                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Additinal Charge</p>
+                                    <div>
+                                        <span class="pe-2 pe-sm-5 additional_charges ">$5,142</span>
+                                    </div>
+                                </div>
+
                                 <div class="structure-list d-flex justify-content-between border-bottom">
                                     <p class="mb-0"><i
                                             class="las la-dot-circle fs-18 text-primary me-2"></i>Clearance Charges</p>
                                     <div>
-                                        <span class="pe-2 pe-sm-5">$5,142</span>
-                                    </div>
-                                </div>
-
-                                <div class="structure-list d-flex justify-content-between border-bottom">
-                                    <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Refinery Loss</p>
-                                    <div>
-                                        <span class="pe-2 pe-sm-5">$5,142</span>
-                                    </div>
-                                </div>
-
-                                <div class="structure-list d-flex justify-content-between border-bottom">
-                                    <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Commission Agent</p>
-                                    <div>
-                                        <span class="pe-2 pe-sm-5">$5,142</span>
+                                        <span class="pe-2 pe-sm-5 clearance_charges ">$5,142</span>
                                     </div>
                                 </div>
 
                                 
                                 <div class="structure-list d-flex justify-content-between border-bottom">
                                     <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Add Mistake Charge</p>
+                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Shippment Additional Charge </p>
                                     <div>
-                                        <span class="pe-2 pe-sm-5">$5,142</span>
+                                        <span class="pe-2 pe-sm-5 shippment_additional_charges ">$5,142</span>
                                     </div>
                                 </div>
 
                                 
                                 <div class="structure-list d-flex justify-content-between border-bottom">
                                     <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Add Insurance+Shipping</p>
+                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Refinary Charges </p>
                                     <div>
-                                        <span class="pe-2 pe-sm-5">$5,142</span>
+                                        <span class="pe-2 pe-sm-5 refinary_charges ">$5,142</span>
                                     </div>
                                 </div>
                                 
-                                <div class="structure-list d-flex justify-content-between border-bottom">
-                                    <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Other Custom Charge</p>
-                                    <div>
-                                        <span class="pe-2 pe-sm-5">$5,142</span>
-                                    </div>
-                                </div>
-
-                                <div class="structure-list d-flex justify-content-between pb-0">
-                                    <p class="mb-0"><i
-                                            class="las la-dot-circle fs-18 text-primary me-2"></i>Other Additional</p>
-                                    <div>
-                                        <span class="pe-2 pe-sm-5">$23,568</span>
-                                    </div>
-                                </div>
+                              
                             </div>
                         </div>
                     </div>
@@ -348,10 +334,10 @@
             }, 0);
            
            $('.counter_value').html(sum_stock);
-            // Get chart colors
+           
             var vectorMapWorldLineColors = getChartColorsArray("mini-chart1");
 
-            // Set up ApexCharts options
+        
             var options = {
                 series: quantities,
                 chart: {
@@ -368,7 +354,7 @@
                 }
             };
 
-            // Render ApexCharts
+      
             var chart = new ApexCharts(document.querySelector("#mini-chart1"), options);
             chart.render();
 
@@ -376,15 +362,14 @@
 
 var vectorMapWorldLineColors = getChartColorsArray("mini-chart2");
 
-// Set up ApexCharts options
 var options = {
-    series: [response.balanceAmount], // Ensure balanceAmount is an array
+    series: [response.balanceAmount], 
     chart: {
         type: "donut",
         height: 110
     },
     colors: vectorMapWorldLineColors,
-    labels:['USD'], // Adjust labels based on your response structure
+    labels:['USD'],
     legend: {
         show: false
     },
@@ -393,7 +378,6 @@ var options = {
     }
 };
 
-// Render ApexCharts
 var chart = new ApexCharts(document.querySelector("#mini-chart2"), options);
 chart.render();
 
@@ -402,15 +386,14 @@ chart.render();
 
  var vectorMapWorldLineColors = getChartColorsArray("mini-chart3");
 
-// Set up ApexCharts options
 var options = {
-    series: [response.lot], // Ensure balanceAmount is an array
+    series: [response.lot], 
     chart: {
         type: "donut",
         height: 110
     },
     colors: vectorMapWorldLineColors,
-    labels:['Dispatched LOT'], // Adjust labels based on your response structure
+    labels:['Dispatched LOT'], 
     legend: {
         show: false
     },
@@ -422,6 +405,129 @@ var options = {
 // Render ApexCharts
 var chart = new ApexCharts(document.querySelector("#mini-chart3"), options);
 chart.render();
+
+$('.net_profit').html(response.net_profit);
+var vectorMapWorldLineColors = getChartColorsArray("mini-chart4");
+
+// Set up ApexCharts options
+var options = {
+    series: [response.net_profit],
+    chart: {
+        type: "donut",
+        height: 110
+    },
+    colors: vectorMapWorldLineColors,
+    labels:['Profit'],
+    legend: {
+        show: false
+    },
+    dataLabels: {
+        enabled: false
+    }
+};
+
+// Render ApexCharts
+var chart = new ApexCharts(document.querySelector("#mini-chart4"), options);
+chart.render();
+
+ $('.payment_activity_current').html(response.payment_activity.current);
+ $('.payment_activity_credit').html(response.payment_activity.credit);
+ $('.payment_activity_debit').html(response.payment_activity.debit);
+
+ $('.making_charges').html('$' +  + response.expense[0].making_charges);
+ $('.courier_charges').html('$' +  + response.expense[0].courier_charges);
+
+  $('.packaging_additional_charges').html('$' +  + response.expense[0].packaging_additional_charges);
+  $('.shipping_charges').html('$' +  + response.expense[0].shipping_charges);
+  $('.insurance_charges').html('$' +  + response.expense[0].insurance_charges);
+  $('.additional_charges').html('$' +  + response.expense[0].additional_charges);
+  $('.clearance_charges').html('$' +  + response.expense[0].clearance_charges);
+  $('.shippment_additional_charges').html('$' +  + response.expense[0].shippment_additional_charges);
+  $('.refinary_charges').html('$' +  + response.expense[0].refinary_charges);
+
+
+const months = Object.keys(response.expense);
+const creditData = months.map((month) => response.expense[month].credit);
+const debitData = months.map((month) => response.expense[month].debit);
+
+const barchartColors = getChartColorsArray("payment_overview_data");
+
+const options1 = {
+    chart: {
+        type: "area",
+        height: 341,
+        toolbar: {
+            show: !1,
+        },
+    },
+    series: [
+        {
+            name: "Credit",
+            data: creditData,
+        },
+        {
+            name: "Debit",
+            data: debitData,
+        },
+    ],
+    stroke: {
+        curve: "smooth",
+        width: ["3.5", "3.5"],
+    },
+    grid: {
+        xaxis: {
+            lines: {
+                show: !0,
+            },
+        },
+        yaxis: {
+            lines: {
+                show: !0,
+            },
+        },
+    },
+    colors: barchartColors,
+    xaxis: {
+        categories: months,
+    },
+    legend: {
+        show: !0,
+    },
+    fill: {
+        type: "gradient",
+        gradient: {
+            shadeIntensity: 1,
+            inverseColors: !1,
+            opacityFrom: 0.4,
+            opacityTo: 0.1,
+            stops: [30, 100, 100, 100],
+        },
+    },
+    dataLabels: {
+        enabled: !1,
+    },
+    tooltip: {
+        fixed: {
+            enabled: !1,
+        },
+        x: {
+            show: !1,
+        },
+        y: {
+            title: {
+                formatter: function (e) {
+                    return "";
+                },
+            },
+        },
+        marker: {
+            show: !1,
+        },
+    },
+};
+
+// Render the chart
+new ApexCharts(document.querySelector("#payment_overview_data"), options1).render();
 
 
         }

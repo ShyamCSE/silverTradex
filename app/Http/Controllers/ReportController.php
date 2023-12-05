@@ -189,7 +189,7 @@ class ReportController extends Controller
 
                
                 return [
-                   'sno' => $key + 1,
+                  'sno' => $key + 1,
                   'category' => $value->category?->name,
                   'quantity' => $value->quantity,
                   'amount' => $value->amount,
@@ -219,6 +219,66 @@ class ReportController extends Controller
     Public function lotStatementExport(Request $request){
        
         return Excel::download(new LotsExport(), 'lotStatement.xlsx');
+    }
+
+
+    Public function chargesstatement(Request $request){
+        if ($request->ajax()) {
+            $lots = Lot::latest()->get();
+        
+            $data = $lots->map(function ($item) {
+                return [
+                    'name' => $item->lot_name,
+                    'quantity' => $item->quantity,
+                    'buying_charges' => $item->quantity * $item->amount,
+                    'making_charges' => $item->making_charges,
+                    'courier_charges' => $item->courier_charges,
+                    'packaging_additional_charges' => $item->packaging_additional_charges,
+                    'shipping_charges' => $item->shipping_charges,
+                    'insurance_charges' => $item->insurance_charges,
+                    'additional_charges' => $item->additional_charges,
+                    'clearance_charges'   => $item->clearance_charges,
+                    'shippment_additional_charges' => $item->shippment_additional_charges,
+                    'refinary_charges' => $item->refinary_charges,
+                ];
+            });
+        
+            return response()->json(['status' => 200, 'data' => $data]);
+        }
+        
+        return view('pages.reports.charges');
+
+    }
+
+    Public function chargesstatementExport(Request $request){
+
+        return Excel::download(new LotsExport(), 'lotStatement.xlsx');
+        
+    }
+
+
+    Public function purchaseLotStatement(Request $request){
+        if ($request->ajax()) {
+            $purchases = purchase::get();
+            $lots = lot::get();
+            
+            $mergedData = $purchases->merge($lots);
+            
+            $data = $mergedData->map(function ($item) {
+                return [
+                    'lot'          =>  $item->lot_name ?? '',
+                    'Supplier'     => $item->supplier?->name ,
+                    'category'     => $item->category->name,
+                    'quantity'     => $item->quantity,
+                    'amount'       => $item->amount ?? $item->rate,
+                    'create_at'    =>  Carbon::parse($item->created_at)->format('d M Y'),
+                ];
+            })->values(); 
+        
+            return response()->json($data);
+        }
+        
+        return view('pages.reports.purchesLotStatement');
     }
 
 }

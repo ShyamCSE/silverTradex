@@ -63,13 +63,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/','index')->name('report');
         Route::get('balanceStatement/{filter?}','balanceStatement')->name('report.balanceStatement');
         Route::get('balanceStatementExport','balanceStatementExport')->name('report.balanceStatement.export');
-
         Route::get('purchaseStatement/{filter?}','purchaseStatement')->name('report.purchaseStatement');
         Route::get('purchaseStatementExport','purchaseStatementExport')->name('report.purchaseStatement.export');
-
         Route::get('lotStatement/{filter?}','lotStatement')->name('report.lotStatement');
         Route::get('lotStatementExport','lotStatementExport')->name('report.lotStatement.export');
-
+        Route::get('chargesstatement','chargesstatement')->name('report.chargesstatement');
+        Route::get('lossStatement','lossStatement')->name('report.lossStatement');
+        Route::get('purchaseLotStatement','purchaseLotStatement')->name('report.purchaseLotStatement');
 
     });
 });

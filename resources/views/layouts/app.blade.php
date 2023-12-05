@@ -183,22 +183,16 @@
                                     <li class="nav-item">
                                         <a href="{{route('report.lotStatement')}}" class="nav-link" data-key="t-sale-report">Lot Statment</a>
                                     </li>
-                                    <!-- <li class="nav-item">
-                                        <a href="finance-statement.html" class="nav-link" data-key="t-payment-summary">Finance Statment </a>
+                                    <li class="nav-item">
+                                        <a href="{{route('report.chargesstatement')}}" class="nav-link" data-key="t-payment-summary">Charges Statement </a>
                                     </li>
                                    
-                                    <li class="nav-item">
-                                        <a href="international-pricing.html" class="nav-link" data-key="t-expenses-report"> International Pricing
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="expense-in-percentage.html" class="nav-link" data-key="t-expenses-report"> Expense In Percentage
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="profit-statement.html" class="nav-link" data-key="t-expenses-report"> Profit </a>
+                                    <!-- <li class="nav-item">
+                                        <a href="{{route('report.lossStatement')}}" class="nav-link" data-key="t-expenses-report"> Loss Statement </a>
                                     </li> -->
+                                    <li class="nav-item">
+                                        <a href="{{route('report.purchaseLotStatement')}}" class="nav-link" data-key="t-expenses-report"> Purchase & lot Statement</a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
